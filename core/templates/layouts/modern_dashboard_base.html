@@ -96,16 +96,7 @@
                 <span class="material-symbols-outlined">assignment_turned_in</span>
                 <span class="font-bold">Attendance</span>
             </a>
-            <a href="#"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-primary transition-all">
-                <span class="material-symbols-outlined">group</span>
-                <span class="font-bold">My Mentees</span>
-            </a>
-            <a href="#"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-primary transition-all">
-                <span class="material-symbols-outlined">done_all</span>
-                <span class="font-bold">Approvals</span>
-            </a>
+
             {% elif user.is_super_admin %}
             <a href="{% url 'admin_list' %}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl {% if 'admin' in request.resolver_match.url_name %}sidebar-item-active{% else %}text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-primary transition-all{% endif %}">

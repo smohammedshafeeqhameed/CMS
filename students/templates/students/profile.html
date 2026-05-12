@@ -381,18 +381,15 @@
                             <div>
                                 <h4
                                     class="font-black text-slate-800 dark:text-white leading-tight group-hover:text-cyan-500 transition-colors">
-                                    {{ record.book.title
-                                    }}</h4>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{{
-                                    record.book.author }}</p>
+                                    {{ record.book.title}}</h4>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{{record.book.author }}</p>
                             </div>
                         </div>
                         <div class="text-right">
                             {% if record.status == 'ISSUED' %}
                             <p
                                 class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-1 flex items-center justify-end gap-1">
-                                <span class="material-symbols-outlined text-[10px]">schedule</span> Due: {{
-                                record.due_date|date:"M d" }}
+                                <span class="material-symbols-outlined text-[10px]">schedule</span> Due: {{record.due_date|date:"M d" }}
                             </p>
                             {% elif record.status == 'PENDING' %}
                             <p
@@ -410,8 +407,7 @@
                                 <span class="material-symbols-outlined text-[10px]">warning</span> OVERDUE
                             </p>
                             {% endif %}
-                            <span class="text-[10px] font-bold text-slate-400">{{ record.request_date|date:"d M Y"
-                                }}</span>
+                            <span class="text-[10px] font-bold text-slate-400">{{ record.request_date|date:"d M Y"}}</span>
                         </div>
                     </div>
                     {% empty %}
@@ -443,8 +439,7 @@
                         </div>
                         <div>
                             <h3 class="text-2xl font-black italic tracking-tighter">Departmental Openings</h3>
-                            <p class="text-slate-500 text-sm">Opportunities tailored to {{
-                                user.department_fk.name|default:"your track" }}</p>
+                            <p class="text-slate-500 text-sm">Opportunities tailored to {{user.department_fk.name|default:"your track" }}</p>
                         </div>
                     </div>
                 </div>
@@ -456,8 +451,7 @@
                         <div class="flex flex-col h-full">
                             <div class="flex justify-between items-start mb-4">
                                 <span
-                                    class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-[10px] font-black text-emerald-600 uppercase">{{
-                                    job.company }}</span>
+                                    class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-[10px] font-black text-emerald-600 uppercase">{{job.company }}</span>
                                 <span class="text-[10px] font-bold text-slate-400">{{ job.deadline|timeuntil }}
                                     left</span>
                             </div>
@@ -466,8 +460,7 @@
                                 {{ job.title }}</h4>
                             <p class="text-xs text-slate-500 line-clamp-2 mb-6">{{ job.description }}</p>
                             <div class="mt-auto flex items-center justify-between">
-                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{
-                                    job.stipend_range|default:"Competitive" }}</span>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{job.stipend_range|default:"Competitive" }}</span>
                                 <a href="{% url 'internship_detail' job.id %}"
                                     class="size-9 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-all">
                                     <span class="material-symbols-outlined text-lg">arrow_forward</span>
@@ -512,8 +505,7 @@
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-1">
                                     <span
-                                        class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[10px] font-black text-slate-500">{{
-                                        eval.subject.code }}</span>
+                                        class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[10px] font-black text-slate-500">{{eval.subject.code }}</span>
                                     <h4 class="font-black text-slate-800 dark:text-slate-100">{{ eval.subject.name }}
                                     </h4>
                                 </div>

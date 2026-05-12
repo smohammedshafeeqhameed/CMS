@@ -28,17 +28,6 @@
                 <a href="{% url 'placement_analytics' %}" class="btn btn-outline">View Analytics</a>
                 <a href="{% url 'manage_jobs' %}" class="btn btn-outline">Student list</a>
 
-                {% elif user.is_faculty %}
-                <a href="#" class="btn btn-primary">My Mentees</a>
-                <a href="#" class="btn btn-outline">Approve Internships</a>
-
-                {% elif user.is_industry %}
-                <a href="#" class="btn btn-primary">View Interns</a>
-                <a href="#" class="btn btn-outline">Submit Feedback</a>
-
-                {% elif user.is_employer %}
-                <a href="#" class="btn btn-primary">Post Job</a>
-                <a href="#" class="btn btn-outline">View Applications</a>
                 {% endif %}
             </div>
         </div>
