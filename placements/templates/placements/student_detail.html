@@ -1,0 +1,277 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Student Dossier - {{ student_user.get_full_name|default:student_user.username }} - EduPulse Pro{% endblock %}
+
+{% block header_title %}Student Intelligence Profile{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-7xl mx-auto pb-20">
+    <!-- Header/Hero Section -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div class="flex items-center gap-6">
+            <div class="relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-primary to-indigo-500 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative size-32 md:size-40 rounded-[2.2rem] bg-white dark:bg-slate-900 border-4 border-white dark:border-slate-800 overflow-hidden shadow-2xl">
+                    {% if profile.profile_photo %}
+                    <img src="{{ profile.profile_photo.url }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-300">
+                        <span class="material-symbols-outlined text-6xl">account_circle</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-3">
+                    <span class="material-symbols-outlined text-sm">verified_user</span>
+                    Verified Student Identity
+                </div>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-800 dark:text-white italic capitalize">
+                    {{ student_user.get_full_name|default:student_user.username }}
+                </h1>
+                <p class="text-slate-500 font-bold mt-1 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">school</span>
+                    {{ student_user.department_fk.name|default:student_user.department }}
+                </p>
+            </div>
+        </div>
+        <a href="{% url 'student_list' %}" class="group flex items-center gap-3 px-6 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-primary transition-all shadow-sm">
+            <span class="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>
+            <span class="font-bold">Back to Student Directory</span>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <!-- Sidebar Dossier -->
+        <aside class="lg:col-span-4 space-y-8">
+            <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 p-8 shadow-xl space-y-8 sticky top-28">
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">contact_page</span>
+                        Primary Metadata
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                            <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Academic CGPA</span>
+                            <span class="text-xl font-black italic text-primary">{{ profile.cgpa|default:"0.0" }}</span>
+                        </div>
+                        <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                            <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Graduation Batch</span>
+                            <span class="font-bold text-slate-700 dark:text-slate-200">{{ profile.batch|default:"N/A" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Contact Intelligence</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 group">
+                            <div class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-xl">alternate_email</span>
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <div class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Email Address</div>
+                                <div class="font-bold text-slate-700 dark:text-slate-200 truncate">{{ student_user.email }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Social Presence</h3>
+                    <div class="flex gap-3">
+                        {% if profile.linkedin_url %}
+                        <a href="{{ profile.linkedin_url }}" target="_blank" class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0077b5]/10 text-[#0077b5] border border-[#0077b5]/20 hover:bg-[#0077b5] hover:text-white transition-all scale-100 active:scale-95">
+                            <i class="bi bi-linkedin"></i>
+                            <span class="text-[10px] font-black uppercase tracking-widest">LinkedIn</span>
+                        </a>
+                        {% endif %}
+                        {% if profile.github_url %}
+                        <a href="{{ profile.github_url }}" target="_blank" class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-900/10 dark:bg-white/10 text-slate-900 dark:text-white border border-slate-900/20 dark:border-white/20 hover:bg-slate-900 dark:hover:bg-white hover:text-white dark:hover:text-slate-900 transition-all scale-100 active:scale-95">
+                            <i class="bi bi-github"></i>
+                            <span class="text-[10px] font-black uppercase tracking-widest">GitHub</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if skills_list %}
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Skill Matrix</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for s in skills_list %}
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest border border-slate-200 dark:border-slate-800">
+                                {{ s }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </aside>
+
+        <!-- Main Content Dossier -->
+        <main class="lg:col-span-8 space-y-10">
+            <!-- Section: Verification Hub -->
+            <section class="glass-card rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                <div class="p-10 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+                    <div class="flex items-center gap-4">
+                        <div class="size-14 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-3xl">verified</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black italic text-slate-800 dark:text-white">Validation Engine</h3>
+                            <p class="text-slate-500 text-sm font-medium">Coordinate and verify student-claimed assets</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-10">
+                    {% if certificates %}
+                    <div class="space-y-6">
+                        {% for cert in certificates %}
+                        <div class="group relative p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                <div class="flex-1 space-y-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="size-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center">
+                                            <span class="material-symbols-outlined">description</span>
+                                        </div>
+                                        <h4 class="text-xl font-black italic text-slate-800 dark:text-white">{{ cert.name }}</h4>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                                            <span class="material-symbols-outlined text-sm">corporate_fare</span>
+                                            {{ cert.issuing_organization }}
+                                        </div>
+                                        <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                                            <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                            Issued: {{ cert.issue_date|date:"M d, Y" }}
+                                        </div>
+                                    </div>
+                                    <div class="pt-2">
+                                        <a href="{{ cert.certificate_file.url }}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:underline underline-offset-4">
+                                            <span class="material-symbols-outlined text-xs">open_in_new</span>
+                                            Examine Document Credentials
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="shrink-0 flex flex-col items-center gap-3 p-4 rounded-3xl bg-slate-50 dark:bg-slate-800/50 min-w-[140px]">
+                                    {% if cert.is_verified %}
+                                    <div class="size-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center shadow-inner">
+                                        <span class="material-symbols-outlined font-black">check_circle</span>
+                                    </div>
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-emerald-500">Authenticated</span>
+                                    <span class="px-3 py-1 rounded bg-emerald-500 text-white text-[8px] font-black uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/30">Verified Asset</span>
+                                    {% else %}
+                                    <div class="size-12 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center shadow-inner animate-pulse">
+                                        <span class="material-symbols-outlined font-black">pending</span>
+                                    </div>
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-amber-500">Awaiting Proof</span>
+                                    <form method="post" action="{% url 'verify_certificate' cert.pk %}" onsubmit="return confirm('Initiate official verification for this credential?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="px-4 py-2 bg-indigo-500 text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-lg shadow-indigo-500/20">
+                                            Authenticate Now
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="flex flex-col items-center justify-center py-10 opacity-50 grayscale">
+                        <span class="material-symbols-outlined text-6xl mb-4 text-slate-300">history_edu</span>
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Inventory Vacant: No Certificates Found</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Section: Specialized Badges -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- STEM Card -->
+                <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 p-8 hover:shadow-2xl transition-all group overflow-hidden relative">
+                    <div class="absolute -right-12 -top-12 size-40 bg-primary/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+                    <div class="relative z-10 space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div class="size-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                                <span class="material-symbols-outlined text-2xl">science</span>
+                            </div>
+                            {% if profile.stem_badge_verified %}
+                            <span class="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[10px] font-black uppercase tracking-widest">Verified</span>
+                            {% else %}
+                            <span class="px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] font-black uppercase tracking-widest">Pending</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-black italic text-slate-800 dark:text-white">STEM Credentials</h4>
+                            <p class="text-slate-500 text-xs font-medium mt-1">Foundational science and technology verification</p>
+                        </div>
+                        {% if profile.stem_badge %}
+                        <a href="{{ profile.stem_badge.url }}" target="_blank" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                            <span class="material-symbols-outlined text-sm">visibility</span>
+                            Inspect STEM Proof
+                        </a>
+                        {% else %}
+                        <div class="py-3 px-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 text-center">
+                            <span class="text-[10px] font-black uppercase text-slate-400">Proof Not Deployed</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- AI/ML Card -->
+                <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 p-8 hover:shadow-2xl transition-all group overflow-hidden relative">
+                    <div class="absolute -right-12 -top-12 size-40 bg-indigo-500/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+                    <div class="relative z-10 space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div class="size-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-2xl">psychology</span>
+                            </div>
+                            {% if profile.aiml_cert_verified %}
+                            <span class="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[10px] font-black uppercase tracking-widest">Verified</span>
+                            {% else %}
+                            <span class="px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] font-black uppercase tracking-widest">Pending</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-black italic text-slate-800 dark:text-white">AI / ML Assets</h4>
+                            <p class="text-slate-500 text-xs font-medium mt-1">Specialized intelligence and modeling credentials</p>
+                        </div>
+                        {% if profile.aiml_cert %}
+                        <a href="{{ profile.aiml_cert.url }}" target="_blank" class="w-full py-3 bg-indigo-900 dark:bg-indigo-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                            <span class="material-symbols-outlined text-sm">visibility</span>
+                            Inspect AI/ML Proof
+                        </a>
+                        {% else %}
+                        <div class="py-3 px-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 text-center">
+                            <span class="text-[10px] font-black uppercase text-slate-400">Proof Not Deployed</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<style>
+    /* Custom spacing for fixed header */
+    .sticky-container {
+        scroll-margin-top: 100px;
+    }
+
+    /* Animation for the shake effect on form errors if any were added later */
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-4px); }
+        75% { transform: translateX(4px); }
+    }
+    .animate-shake {
+        animation: shake 0.4s ease-in-out;
+    }
+</style>
+{% endblock %}

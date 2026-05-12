@@ -1,0 +1,100 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Internships - EduPulse{% endblock %}
+
+{% block header_title %}Career Opportunities{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-7xl mx-auto space-y-10">
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden rounded-[2.5rem] bg-slate-900 px-8 py-12 text-white shadow-2xl">
+        <div class="absolute right-0 top-0 -mr-20 -mt-20 size-64 rounded-full bg-primary/20 blur-3xl"></div>
+        <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+            <div class="size-24 rounded-3xl bg-white/10 backdrop-blur-xl flex items-center justify-center border border-white/20">
+                <span class="material-symbols-outlined text-5xl">work</span>
+            </div>
+            <div class="flex-1 text-center md:text-left">
+                <h1 class="text-4xl font-black mb-2 italic">Internship Portal</h1>
+                <p class="text-slate-300 text-lg leading-relaxed max-w-2xl font-medium">
+                    Explore curated opportunities from top industry partners. Boost your career with hands-on experience and professional exposure.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Opportunities Grid -->
+    <div class="space-y-6">
+        <div class="flex items-center justify-between px-2">
+            <h2 class="text-2xl font-black flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">local_fire_department</span>
+                Active Postings
+            </h2>
+            <div class="flex items-center gap-2 text-sm font-bold text-slate-500 bg-slate-100 dark:bg-slate-800/50 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-800">
+                <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                {{ jobs.count }} Openings
+            </div>
+        </div>
+
+        {% if jobs %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for job in jobs %}
+            <div class="glass-card p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:scale-[1.02] active:scale-[0.98] transition-all group flex flex-col h-full shadow-sm hover:shadow-xl hover:shadow-primary/5">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="size-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+                        <span class="material-symbols-outlined text-3xl">corporate_fare</span>
+                    </div>
+                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">
+                        Active
+                    </span>
+                </div>
+
+                <div class="flex-1">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-slate-100 group-hover:text-primary transition-colors leading-tight mb-1">
+                        {{ job.title }}
+                    </h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-bold mb-6 italic">{{ job.company }}</p>
+
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center gap-3 text-sm font-medium text-slate-600 dark:text-slate-400">
+                            <div class="size-8 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                                <span class="material-symbols-outlined text-lg">payments</span>
+                            </div>
+                            <span>{{ job.stipend_range|default:"Competitive" }}</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm font-medium text-slate-600 dark:text-slate-400">
+                            <div class="size-8 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                                <span class="material-symbols-outlined text-lg">calendar_today</span>
+                            </div>
+                            <span>Deadline: {{ job.deadline|date:"M d, Y" }}</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm font-medium text-slate-600 dark:text-slate-400">
+                            <div class="size-8 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                                <span class="material-symbols-outlined text-lg">location_on</span>
+                            </div>
+                            <span>{{ job.location|default:"Remote / Hybrid" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="{% url 'internship_detail' job.id %}" 
+                   class="w-full py-4 bg-slate-900 dark:bg-slate-800 text-white rounded-2xl font-black text-center hover:bg-primary dark:hover:bg-primary transition-all flex items-center justify-center gap-2 group/btn shadow-lg shadow-black/10">
+                    View Opportunity
+                    <span class="material-symbols-outlined text-lg transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="glass-card rounded-[3rem] p-20 text-center border-dashed border-2 border-slate-200 dark:border-slate-800">
+            <div class="size-24 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mx-auto mb-6 text-slate-400">
+                <span class="material-symbols-outlined text-5xl">search_off</span>
+            </div>
+            <h3 class="text-2xl font-black text-slate-800 dark:text-slate-100 mb-2">No Active Postings Found</h3>
+            <p class="text-slate-500 dark:text-slate-400 font-medium max-w-md mx-auto italic">
+                We couldn't find any internships matching your criteria at the moment. Please check back later or update your profile interests.
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

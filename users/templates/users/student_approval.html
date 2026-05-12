@@ -1,0 +1,52 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Verify Students - SkillBridge{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <h1 style="margin-bottom: 2rem;">Pending Student Approvals</h1>
+
+    <div class="card glass-card">
+        {% if pending_students %}
+        <div style="overflow-x: auto;">
+            <table class="table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="text-align: left; border-bottom: 2px solid var(--border);">
+                        <th style="padding: 1rem;">Username</th>
+                        <th style="padding: 1rem;">Full Name</th>
+                        <th style="padding: 1rem;">Department</th>
+                        <th style="padding: 1rem;">Date Joined</th>
+                        <th style="padding: 1rem;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in pending_students %}
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 1rem;">{{ student.username }}</td>
+                        <td style="padding: 1rem;">{{ student.get_full_name }}</td>
+                        <td style="padding: 1rem;">{{ student.department }}</td>
+                        <td style="padding: 1rem;">{{ student.date_joined|date:"M d, Y" }}</td>
+                        <td style="padding: 1rem;">
+                            <form action="{% url 'approve_student' student.pk %}" method="POST"
+                                style="display: flex; gap: 0.5rem;">
+                                {% csrf_token %}
+                                <button type="submit" name="action" value="approve"
+                                    class="btn btn-sm btn-success">Approve</button>
+                                <button type="submit" name="action" value="reject"
+                                    class="btn btn-sm btn-danger">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 3rem;">
+            <p style="color: var(--text-muted); font-size: 1.2rem;">No pending student registrations.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

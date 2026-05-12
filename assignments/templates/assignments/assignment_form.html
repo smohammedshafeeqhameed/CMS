@@ -1,0 +1,74 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Assignment - EduPulse Pro{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-4xl mx-auto py-10">
+    <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
+        <!-- Header -->
+        <div class="p-10 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="size-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">add_task</span>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-black italic tracking-tight">{% if form.instance.pk %}Edit{% else %}Provision{% endif %} <span class="text-primary">Assignment</span></h1>
+                    <p class="text-slate-500 font-medium italic">Define new instructional objectives for student cohorts</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form method="post" enctype="multipart/form-data" class="p-10 space-y-8">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Assignment Title</label>
+                    {{ form.title }}
+                </div>
+
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Requirements Specification</label>
+                    {{ form.description }}
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Subject Mapping</label>
+                    {{ form.subject }}
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Temporal Threshold (Due Date)</label>
+                    {{ form.due_date }}
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Maximum Score</label>
+                    {{ form.max_marks }}
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Reference Artifact (Optional)</label>
+                    {{ form.attachment }}
+                </div>
+
+                <div class="flex items-center gap-3 p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+                    {{ form.is_active }}
+                    <label class="text-sm font-bold text-slate-600 dark:text-slate-400">Mark as Active Objective</label>
+                </div>
+            </div>
+
+            <div class="pt-8 flex items-center gap-4">
+                <button type="submit" class="flex-1 py-5 bg-primary text-white rounded-[1.5rem] font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/30 hover:scale-[1.02] transition-all flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined font-black">publish</span>
+                    Initialize Synchronization
+                </button>
+                <a href="{% url 'assignment_list' %}" class="px-10 py-5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-[1.5rem] font-black uppercase tracking-[0.2em] hover:bg-slate-200 transition-all">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

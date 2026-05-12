@@ -1,0 +1,82 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Grade Submission - {{ submission.student.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-2xl mx-auto py-10">
+    <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
+        <!-- Header -->
+        <div class="p-10 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+            <div class="flex items-center gap-4">
+                <div class="size-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">rate_review</span>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-black italic tracking-tight">Grade <span class="text-primary">Submission</span></h1>
+                    <p class="text-slate-500 font-medium italic">Student: {{ submission.student.get_full_name }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submission Content -->
+        <div class="p-10 bg-slate-50/30 dark:bg-slate-800/10 border-b border-slate-100 dark:border-slate-800">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Attached Artifact</h3>
+                    <a href="{{ submission.submission_file.url }}" target="_blank" class="mt-2 inline-flex items-center gap-3 text-primary font-bold hover:underline">
+                        <span class="material-symbols-outlined">description</span>
+                        Open Submission File
+                    </a>
+                </div>
+                <div class="text-right">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Temporal Status</h3>
+                    <p class="mt-1 font-bold {% if submission.is_late %}text-rose-500{% else %}text-emerald-500{% endif %}">
+                        {% if submission.is_late %}Late Submission{% else %}Synchronized On-Time{% endif %}
+                    </p>
+                </div>
+            </div>
+            {% if submission.remarks %}
+                <div class="mt-6 p-4 rounded-2xl bg-white dark:bg-background-dark border border-slate-100 dark:border-slate-800">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Student Remarks</h3>
+                    <p class="text-sm font-medium italic text-slate-600 dark:text-slate-400">"{{ submission.remarks }}"</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Grading Form -->
+        <form method="post" class="p-10 space-y-8">
+            {% csrf_token %}
+            
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between ml-4">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Score Gradient</label>
+                        <span class="text-[10px] font-black text-primary">Max Score: {{ submission.assignment.max_marks }}</span>
+                    </div>
+                    {{ form.marks_obtained }}
+                    {% if form.marks_obtained.errors %}
+                        <p class="text-rose-500 text-[10px] font-bold mt-1 ml-4">{{ form.marks_obtained.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Validation Feedback</label>
+                    {{ form.feedback }}
+                    {% if form.feedback.errors %}
+                        <p class="text-rose-500 text-[10px] font-bold mt-1 ml-4">{{ form.feedback.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="pt-8 flex items-center gap-4">
+                <button type="submit" class="flex-1 py-5 bg-primary text-white rounded-[1.5rem] font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/30 hover:scale-[1.02] transition-all">
+                    Finalize Validation
+                </button>
+                <a href="{% url 'submission_list' submission.assignment.pk %}" class="px-10 py-5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-[1.5rem] font-black uppercase tracking-[0.2em] hover:bg-slate-200 transition-all">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,612 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Holy Grace Academy of Engineering | Official Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2563eb",
+                        "secondary": "#4f46e5",
+                        "accent": "#f59e0b",
+                        "surface": "#f8fafc",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .glass-nav {
+                @apply bg-white/80 backdrop-blur-xl border-b border-slate-200/50 sticky top-0 z-50;
+            }
+            .section-title {
+                @apply text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-4 font-display;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-slate-100;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2;
+            }
+            .btn-secondary {
+                @apply bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-all flex items-center gap-2;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white text-slate-900 font-sans selection:bg-primary/10 selection:text-primary">
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="size-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined">account_balance</span>
+                </div>
+                <div>
+                    <span class="text-xl font-black tracking-tight font-display block leading-none">HGAE</span>
+                    <span class="text-[10px] uppercase tracking-tighter font-bold text-slate-400">Mala, Thrissur</span>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about" class="text-sm font-semibold text-slate-600 hover:text-primary transition-colors">About</a>
+                <a href="#features" class="text-sm font-semibold text-slate-600 hover:text-primary transition-colors">Facilities</a>
+                <a href="#courses" class="text-sm font-semibold text-slate-600 hover:text-primary transition-colors">Courses</a>
+                <a href="#contact" class="text-sm font-semibold text-slate-600 hover:text-primary transition-colors">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg transition-transform active:scale-95">Dashboard</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="text-sm font-bold text-slate-600 hover:text-primary mr-2 hidden sm:block">Login</a>
+                <a href="{% url 'signup' %}" class="bg-primary text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 transition-transform active:scale-95">Join Portal</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-16 pb-24 px-6 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 -z-10 w-full h-full opacity-40">
+            <div class="absolute top-20 right-10 w-96 h-96 bg-primary/20 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-10 left-10 w-72 h-72 bg-secondary/20 rounded-full blur-[80px]"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto text-center lg:text-left grid lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 border border-slate-200/60 text-slate-600 text-xs font-bold uppercase tracking-widest">
+                    <span class="size-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    Affiliated to University of Kerala
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black leading-[1.1] tracking-tight text-slate-900 font-display">
+                    Holy Grace <br><span class="text-primary">Academy</span> of Engineering
+                </h1>
+                <p class="text-xl text-slate-500 font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
+                    Empowering minds since 1995. A premier educational institution dedicated to academic excellence, human values, and social commitment.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                    <a href="{% url 'signup' %}" class="btn-primary w-full sm:w-auto">
+                        Apply Now <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                    </a>
+                    <a href="#courses" class="btn-secondary w-full sm:w-auto">
+                        Explore Courses
+                    </a>
+                </div>
+                <div class="flex items-center gap-6 pt-4 justify-center lg:justify-start">
+                    <div>
+                        <div class="text-2xl font-black text-slate-900">1995</div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Established</div>
+                    </div>
+                    <div class="w-px h-8 bg-slate-200"></div>
+                    <div>
+                        <div class="text-2xl font-black text-slate-900">10+</div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Programs</div>
+                    </div>
+                    <div class="w-px h-8 bg-slate-200"></div>
+                    <div>
+                        <div class="text-2xl font-black text-slate-900">40+</div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Expert Faculty</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative group">
+                <div class="absolute -inset-4 bg-gradient-to-tr from-primary/10 to-secondary/10 rounded-[2.5rem] blur-2xl group-hover:blur-3xl transition-all duration-500"></div>
+                <div class="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl border border-white/20 bg-slate-100">
+                    <img src="{% static 'images/collegeimg.png' %}"
+                         alt="College Campus" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent flex items-end p-10">
+                        <div class="text-white">
+                            <h3 class="text-2xl font-bold italic mb-1">"Academic Excellence & Holistic Development"</h3>
+                            <p class="text-white/80 font-medium font-display leading-none">Lead me from darkness to light</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Detailed Info Section -->
+    <section id="about" class="py-24 bg-surface">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-2 space-y-12">
+                    <div>
+                        <h2 class="section-title">Institutional Heritage</h2>
+                        <div class="prose prose-slate prose-lg max-w-none">
+                            <p class="text-slate-600 leading-relaxed text-lg">
+                                Holy Grace Group of Educational Institutions came into being in 1999 under the banner ‘Holy Grace Foundation’. Affiliated with the <strong>University of Kerala</strong>, we provide a holistic learning environment that balances rigorous academics with cultural values.
+                            </p>
+                            <p class="text-slate-600 leading-relaxed text-lg mt-4">
+                                Located away from the city's hustle, our eco-friendly campus offers the perfect atmosphere for intellectual growth and research.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200/50">
+                            <span class="material-symbols-outlined text-primary text-4xl mb-4">school</span>
+                            <h4 class="text-xl font-bold mb-2">Our Vision</h4>
+                            <p class="text-slate-500 text-sm leading-relaxed">To be a pioneer in integrated education, fostering innovation while preserving our cultural heritage and national integrity.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200/50">
+                            <span class="material-symbols-outlined text-secondary text-4xl mb-4">psychology</span>
+                            <h4 class="text-xl font-bold mb-2">Academic Rigor</h4>
+                            <p class="text-slate-500 text-sm leading-relaxed">Guided by Principal <strong>Dr. K Prasanth</strong> we maintain a 98% response accuracy in student support.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="bg-primary rounded-[2rem] p-8 text-white shadow-2xl shadow-primary/20">
+                        <h3 class="text-2xl font-bold mb-6">College Timings</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                                <span class="text-white/70 font-medium">Instruction</span>
+                                <span class="font-bold">09:45 AM - 03:20 PM</span>
+                            </div>
+                            <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                                <span class="text-white/70 font-medium">Lunch Break</span>
+                                <span class="font-bold">12:45 PM - 01:30 PM</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-white/70 font-medium">Working Days</span>
+                                <span class="font-bold">Mon - Fri</span>
+                            </div>
+                        </div>
+                        <div class="mt-8 bg-white/10 p-4 rounded-2xl flex items-start gap-3">
+                            <span class="material-symbols-outlined text-emerald-400">check_circle</span>
+                            <p class="text-xs font-medium text-white/90">UGC-NET oriented coaching and remedial classes conducted regularly.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-[2rem] p-8 border border-slate-200">
+                        <h3 class="text-xl font-bold mb-4">Quick Contact</h3>
+                        <div class="space-y-4">
+                            <div class="flex gap-4 items-center">
+                                <div class="size-10 bg-slate-100 rounded-full flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-slate-600 text-lg">call</span>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] uppercase font-bold text-slate-400">Phone</div>
+                                    <div class="font-bold text-slate-700">0470 267 8899</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <div class="size-10 bg-slate-100 rounded-full flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-slate-600 text-lg">mail</span>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] uppercase font-bold text-slate-400">Email</div>
+                                    <div class="font-bold text-slate-700 text-sm">info@holygrace.edu.in</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities Section -->
+    <section id="features" class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="section-title">World-Class Facilities</h2>
+                <p class="text-slate-500 font-medium">We provide a comprehensive infrastructure ecosystem designed to support modern pedagogy and student development.</p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="p-8 rounded-[2rem] bg-white card-hover">
+                    <div class="size-14 bg-blue-50 text-primary rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">computer</span>
+                    </div>
+                    <h4 class="text-xl font-extrabold mb-3 font-display">ICT Smart Classrooms</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Advanced learning environments equipped with modern multimedia tools and high-speed campus-wide Wi-Fi connectivity.</p>
+                </div>
+                
+                <div class="p-8 rounded-[2rem] bg-white card-hover">
+                    <div class="size-14 bg-indigo-50 text-secondary rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">library_books</span>
+                    </div>
+                    <h4 class="text-xl font-extrabold mb-3 font-display">State-of-the-art Library</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">A massive repository of books, digital resources, and journals providing a calm haven for extensive research and reading.</p>
+                </div>
+                
+                <div class="p-8 rounded-[2rem] bg-white card-hover">
+                    <div class="size-14 bg-amber-50 text-accent rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">science</span>
+                    </div>
+                    <h4 class="text-xl font-extrabold mb-3 font-display">Specialized Laboratories</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Well-equipped science and computer laboratories providing hands-on practical experience in controlled environments.</p>
+                </div>
+
+                <div class="p-8 rounded-[2rem] bg-white card-hover">
+                    <div class="size-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">solar_power</span>
+                    </div>
+                    <h4 class="text-xl font-extrabold mb-3 font-display">Sustainable Campus</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Environmentally conscious infrastructure including solar power systems and extensive eco-friendly green zones.</p>
+                </div>
+
+                <div class="p-8 rounded-[2rem] bg-white card-hover">
+                    <div class="size-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">sports_soccer</span>
+                    </div>
+                    <h4 class="text-xl font-extrabold mb-3 font-display">Sports & Wellness</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Extensive playgrounds for athletics and team sports, along with specialized Women’s Recreation Center facilities.</p>
+                </div>
+
+                <div class="p-8 rounded-[2rem] bg-white card-hover">
+                    <div class="size-14 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">restaurant</span>
+                    </div>
+                    <h4 class="text-xl font-extrabold mb-3 font-display">Campus Canteen</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Hygienic and nutritious food services available within the campus premises for both students and faculty members.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="py-24 bg-slate-900 text-white rounded-[3rem] mx-4 overflow-hidden relative">
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="absolute -top-10 -right-10 size-96 bg-primary rounded-full blur-[120px]"></div>
+            <div class="absolute -bottom-20 -left-20 size-80 bg-secondary rounded-full blur-[100px]"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-black mb-8 font-display">Academic <br><span class="text-primary">Programs</span></h2>
+                    <p class="text-slate-400 text-lg mb-12">We offer a diverse range of undergraduate and postgraduate courses tailored to meet the evolving demands of the global workforce.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between group hover:bg-white/10 transition-all cursor-default">
+                            <span class="font-bold flex items-center gap-3">
+                                <span class="size-2 bg-primary rounded-full"></span>
+                                Computer Science & IT
+                            </span>
+                            <span class="text-xs font-bold text-slate-500">B.Sc & M.Sc</span>
+                        </div>
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between group hover:bg-white/10 transition-all cursor-default">
+                            <span class="font-bold flex items-center gap-3">
+                                <span class="size-2 bg-secondary rounded-full"></span>
+                                Commerce & Finance
+                            </span>
+                            <span class="text-xs font-bold text-slate-500">B.Com & M.Com</span>
+                        </div>
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between group hover:bg-white/10 transition-all cursor-default">
+                            <span class="font-bold flex items-center gap-3">
+                                <span class="size-2 bg-accent rounded-full"></span>
+                                Business Administration
+                            </span>
+                            <span class="text-xs font-bold text-slate-500">BBA</span>
+                        </div>
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between group hover:bg-white/10 transition-all cursor-default">
+                            <span class="font-bold flex items-center gap-3">
+                                <span class="size-2 bg-emerald-500 rounded-full"></span>
+                                Humanities & Social Work
+                            </span>
+                            <span class="text-xs font-bold text-slate-500">BA & BSW</span>
+                        </div>
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between group hover:bg-white/10 transition-all cursor-default">
+                            <span class="font-bold flex items-center gap-3">
+                                <span class="size-2 bg-indigo-500 rounded-full"></span>
+                                Psychology
+                            </span>
+                            <span class="text-xs font-bold text-slate-500">B.Sc</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/5 backdrop-blur-md rounded-[2.5rem] p-10 border border-white/10">
+                    <h3 class="text-2xl font-bold mb-6">Admission Info</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="text-primary text-[10px] uppercase font-black tracking-widest mb-1">Process</div>
+                            <p class="text-sm text-slate-300 leading-relaxed">Admission via University of Kerala Centralized Allotment Process (CAP). UG selection based on merit; PG largely through entrance exams.</p>
+                        </div>
+                        <div>
+                            <div class="text-secondary text-[10px] uppercase font-black tracking-widest mb-1">Eligibility</div>
+                            <p class="text-sm text-slate-300 leading-relaxed">Minimum 45% aggregate in Higher Secondary or equivalent for UG. Graduation in relevant field for PG.</p>
+                        </div>
+                        <div class="pt-6 border-t border-white/10">
+                            <a href="https://admissions.keralauniversity.ac.in" target="_blank" class="w-full bg-white text-slate-900 py-4 rounded-xl flex items-center justify-center gap-2 font-black shadow-xl hover:scale-[1.02] transition-all">
+                                University Portal <span class="material-symbols-outlined text-sm">open_in_new</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values & Final CTA -->
+    <section class="py-24 max-w-7xl mx-auto px-6">
+        <div class="bg-slate-50 border border-slate-200 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4">
+                <span class="material-symbols-outlined text-slate-200 text-9xl -rotate-12 opacity-50">verified</span>
+            </div>
+            
+            <h2 class="text-3xl md:text-5xl font-black mb-6 font-display">Join Our Community</h2>
+            <p class="text-slate-500 text-lg mb-12 max-w-2xl mx-auto font-medium">
+                Integrated teaching, mentoring, and campus placements. Start your journey towards a rewarding career with HGAE Mala.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn-primary">
+                    Enter Portal <span class="material-symbols-outlined">launch</span>
+                </a>
+                {% else %}
+                <a href="{% url 'signup' %}" class="btn-primary">
+                    Register for Admission
+                </a>
+                <a href="{% url 'login' %}" class="btn-secondary">
+                    Member Login
+                </a>
+                {% endif %}
+            </div>
+            
+            <div class="mt-16 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+                <div class="flex items-center gap-2 text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                    <span class="material-symbols-outlined text-primary text-lg">shield</span> Integrity
+                </div>
+                <div class="flex items-center gap-2 text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                    <span class="material-symbols-outlined text-secondary text-lg">public</span> Accountability
+                </div>
+                <div class="flex items-center gap-2 text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                    <span class="material-symbols-outlined text-emerald-500 text-lg">diversity_3</span> Inclusiveness
+                </div>
+                <div class="flex items-center gap-2 text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                    <span class="material-symbols-outlined text-amber-500 text-lg">energy_savings_leaf</span> Sustainability
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-white border-t border-slate-100 pt-20 pb-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div class="space-y-6 lg:col-span-1">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-3xl">account_balance</span>
+                        <span class="text-2xl font-black tracking-tight font-display">HGAE</span>
+                    </div>
+                    <p class="text-slate-400 text-sm font-medium leading-relaxed">
+                        Mala P.O, Thrissur, <br>Kerala <br>Pin – 680732
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="size-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all"><span class="material-symbols-outlined">facebook</span></a>
+                        <a href="#" class="size-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all"><span class="material-symbols-outlined">alternate_email</span></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h5 class="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">Institution</h5>
+                    <ul class="space-y-4 text-sm font-bold text-slate-500">
+                        <li><a href="#about" class="hover:text-primary">About Us</a></li>
+                        <li><a href="#" class="hover:text-primary">Principal's Desk</a></li>
+                        <li><a href="#" class="hover:text-primary">Management</a></li>
+                        <li><a href="#" class="hover:text-primary">Departments</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">University</h5>
+                    <ul class="space-y-4 text-sm font-bold text-slate-500">
+                        <li><a href="https://www.keralauniversity.ac.in" target="_blank" class="hover:text-primary">Kerala University</a></li>
+                        <li><a href="https://www.ugc.ac.in" target="_blank" class="hover:text-primary">UGC Official</a></li>
+                        <li><a href="https://www.naac.gov.in" target="_blank" class="hover:text-primary">NAAC India</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">Support</h5>
+                    <ul class="space-y-4 text-sm font-bold text-slate-500">
+                        <li><a href="#" class="hover:text-primary">Help Center</a></li>
+                        <li><a href="#" class="hover:text-primary">Terms of Use</a></li>
+                        <li><a href="#" class="hover:text-primary">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-slate-100 text-center flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">
+                    © 2024 Holy Grace Academy of Engineering. Mala.
+                </p>
+                <div class="flex gap-8 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                    <a href="#" class="hover:text-slate-600">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-600">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation Dock -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-t border-slate-100 pb-10 pt-2 flex justify-around items-center px-4 md:hidden">
+        <a class="flex flex-col items-center gap-1 text-primary" href="{% url 'landing' %}">
+            <span class="material-symbols-outlined text-2xl fill-1">home</span>
+            <span class="text-[10px] font-bold">Home</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-slate-400" href="#features">
+            <span class="material-symbols-outlined text-2xl">verified</span>
+            <span class="text-[10px] font-medium">Features</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-slate-400" href="#courses">
+            <span class="material-symbols-outlined text-2xl">school</span>
+            <span class="text-[10px] font-medium">Courses</span>
+        </a>
+        {% if user.is_authenticated %}
+        <a class="flex flex-col items-center gap-1 text-slate-400" href="{% url 'dashboard' %}">
+            <span class="material-symbols-outlined text-2xl">space_dashboard</span>
+            <span class="text-[10px] font-medium">Dashboard</span>
+        </a>
+        {% else %}
+        <a class="flex flex-col items-center gap-1 text-slate-400" href="{% url 'login' %}">
+            <span class="material-symbols-outlined text-2xl">login</span>
+            <span class="text-[10px] font-medium">Login</span>
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Redesigned Chatbot (Optional but kept for functionality) -->
+    <div class="hidden lg:block fixed bottom-8 right-8 z-[60]">
+        <button id="chatbot-toggle" class="size-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all group overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-tr from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <span class="material-symbols-outlined text-2xl relative z-10">smart_toy</span>
+            <div class="absolute -top-1 -right-1 size-3 bg-emerald-500 border-2 border-white rounded-full"></div>
+        </button>
+        
+        <div id="chatbot-window" class="absolute bottom-16 right-0 w-[400px] h-0 bg-white shadow-2xl rounded-3xl border border-slate-200 flex flex-col overflow-hidden transition-all duration-300 opacity-0 pointer-events-none origin-bottom-right">
+            <div class="p-6 bg-slate-900 text-white flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="size-10 rounded-xl bg-white/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">school</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">HGAE Assistant</h4>
+                        <p class="text-[10px] text-slate-400 uppercase font-black">Online Now</p>
+                    </div>
+                </div>
+                <button id="chatbot-close" class="hover:bg-white/10 p-2 rounded-xl transition-colors">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+            
+            <div id="chatbot-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <div class="flex gap-3">
+                    <div class="bg-slate-100 p-4 rounded-2xl rounded-tl-none text-sm font-medium text-slate-600">
+                        Namaste! How can I assist you with **Holy Grace Academy of Engineering** today?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 border-t border-slate-100 bg-slate-50">
+                <form id="chatbot-form" class="flex gap-2">
+                    <input type="text" id="chatbot-input" class="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-primary" placeholder="Ask anything..." autocomplete="off" />
+                    <button type="submit" class="size-11 bg-primary text-white rounded-xl flex items-center justify-center shadow-lg shadow-primary/20"><span class="material-symbols-outlined text-lg">send</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatToggle = document.getElementById('chatbot-toggle');
+        const chatWindow = document.getElementById('chatbot-window');
+        const chatClose = document.getElementById('chatbot-close');
+        const chatForm = document.getElementById('chatbot-form');
+        const chatInput = document.getElementById('chatbot-input');
+        const chatMessages = document.getElementById('chatbot-messages');
+        
+        let isOpen = false;
+        function toggleChat() {
+            isOpen = !isOpen;
+            if (isOpen) {
+                chatWindow.classList.replace('h-0', 'h-[500px]');
+                chatWindow.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                chatWindow.classList.replace('h-[500px]', 'h-0');
+                chatWindow.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+        chatToggle?.addEventListener('click', toggleChat);
+        chatClose?.addEventListener('click', toggleChat);
+
+        chatForm?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if(!text) return;
+            
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'flex gap-3 justify-end mt-4';
+            userMsg.innerHTML = '<div class="bg-primary text-white p-4 rounded-2xl rounded-tr-none text-sm font-medium">' + text + '</div>';
+            chatMessages.appendChild(userMsg);
+            
+            chatInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Show typing indicator
+            const typingMsg = document.createElement('div');
+            typingMsg.className = 'flex gap-3 mt-4';
+            typingMsg.id = 'typing-indicator';
+            typingMsg.innerHTML = '<div class="bg-slate-100 p-4 rounded-2xl rounded-tl-none text-sm font-medium text-slate-600 animate-pulse">Thinking...</div>';
+            chatMessages.appendChild(typingMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const response = await fetch('/chatbot/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: text })
+                });
+                
+                const data = await response.json();
+                document.getElementById('typing-indicator').remove();
+                
+                const botMsg = document.createElement('div');
+                botMsg.className = 'flex gap-3 mt-4';
+                if(data.status === 'success') {
+                    // Convert newlines to breaks
+                    let formattedMsg = data.message.replace(/\n/g, '<br>');
+                    botMsg.innerHTML = '<div class="bg-slate-100 p-4 rounded-2xl rounded-tl-none text-sm font-medium text-slate-600 leading-relaxed">' + formattedMsg + '</div>';
+                } else {
+                    botMsg.innerHTML = '<div class="bg-red-100 p-4 rounded-2xl rounded-tl-none text-sm font-medium text-red-600">Sorry, I encountered an error. Please try again.</div>';
+                }
+                chatMessages.appendChild(botMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+            } catch(error) {
+                document.getElementById('typing-indicator').remove();
+                const botMsg = document.createElement('div');
+                botMsg.className = 'flex gap-3 mt-4';
+                botMsg.innerHTML = '<div class="bg-red-100 p-4 rounded-2xl rounded-tl-none text-sm font-medium text-red-600">Network error. Please try again later.</div>';
+                chatMessages.appendChild(botMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    </script>
+</body>
+
+</html>

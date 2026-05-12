@@ -1,0 +1,178 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Attendance Management - EduPulse AI{% endblock %}
+
+{% block header_title %}Student Attendance{% endblock %}
+
+{% block content %}
+<div class="space-y-8 animate-fade-in">
+    <div
+        class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+        <div class="absolute -right-10 -top-10 size-40 bg-primary/5 rounded-full blur-3xl"></div>
+
+        <div class="flex items-center gap-4 mb-10 relative z-10">
+            <div class="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-3xl">assignment_turned_in</span>
+            </div>
+            <div>
+                <h3 class="text-2xl font-black tracking-tight">Select Subject</h3>
+                <p class="text-slate-500 text-sm">Pick a subject to mark or review attendance records.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+            {% for subject in subjects %}
+            <div
+                class="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all">
+                <div class="flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <span
+                            class="px-2 py-0.5 rounded-md bg-primary/10 text-[10px] font-black text-primary uppercase">{{
+                            subject.code }}</span>
+                        <span
+                            class="px-2 py-0.5 rounded-md bg-slate-200 dark:bg-slate-700 text-[10px] font-bold text-slate-500 uppercase">Sem
+                            {{ subject.semester }}</span>
+                    </div>
+                    <h4
+                        class="font-black text-slate-800 dark:text-slate-100 mb-2 group-hover:text-primary transition-colors text-lg">
+                        {{ subject.name }}</h4>
+                    <p class="text-xs text-slate-500 font-medium mb-6 italic">{{ subject.course.name }}</p>
+
+                    <div class="mt-auto space-y-3">
+                        <a href="{% url 'mark_attendance' subject.id %}"
+                            class="w-full py-3 bg-primary text-white rounded-xl flex items-center justify-center gap-2 text-sm font-black hover:shadow-lg hover:shadow-primary/30 transition-all group/btn">
+                            Mark Attendance
+                            <span
+                                class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                        </a>
+
+                        <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Bulk
+                                Operations</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <a href="{% url 'download_attendance_template' subject.id %}"
+                                    class="flex items-center justify-center gap-2 py-2 px-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                                    <span class="material-symbols-outlined text-sm">download</span>
+                                    Template
+                                </a>
+                                <button onclick="openUploadModal('{{ subject.id }}', '{{ subject.name }}')"
+                                    class="flex items-center justify-center gap-2 py-2 px-3 bg-emerald-500/10 text-emerald-600 rounded-lg text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all">
+                                    <span class="material-symbols-outlined text-sm">upload_file</span>
+                                    Upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div
+                class="col-span-full py-20 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl">
+                <span class="material-symbols-outlined text-5xl text-slate-200 mb-4 animate-pulse">menu_book</span>
+                <p class="text-slate-400 font-bold text-lg">No assigned subjects found.</p>
+                <p class="text-slate-400 text-sm mt-1">Contact administrator if you should have subjects assigned.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Upload Modal -->
+<div id="uploadModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeUploadModal()"></div>
+    <div
+        class="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-200 dark:border-slate-800 p-8 overflow-hidden">
+        <button onclick="closeUploadModal()"
+            class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="mb-8">
+            <div class="size-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-2xl">table_chart</span>
+            </div>
+            <h3 class="text-2xl font-black">Attendance Upload</h3>
+            <p id="modal-subject-name" class="text-slate-500 text-sm mt-1 font-bold text-primary"></p>
+            <p class="text-slate-500 text-xs mt-1">Upload your cumulative attendance register.</p>
+        </div>
+
+        <div class="space-y-6">
+            <!-- Template Download Section -->
+            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Step 1: Get Template</p>
+                <a id="modal-download-link" href="#"
+                    class="w-full py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center gap-2 text-xs font-black text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-all">
+                    <span class="material-symbols-outlined text-lg">download_for_offline</span>
+                    Download Excel Template
+                </a>
+                <p class="text-[9px] text-slate-500 mt-2 italic">Contains: student id, student name, attendance
+                    percentage</p>
+            </div>
+
+            <!-- Upload Section -->
+            <form id="modal-upload-form" method="post" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Step 2: Upload File
+                    </p>
+                    <div onclick="document.getElementById('modal-file-input').click()"
+                        class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center cursor-pointer hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all group">
+                        <span
+                            class="material-symbols-outlined text-3xl text-slate-300 group-hover:text-emerald-500 transition-colors mb-2">cloud_upload</span>
+                        <p id="file-name-label" class="text-xs font-bold text-slate-600 dark:text-slate-300">Browse
+                            Excel File</p>
+                        <input type="file" id="modal-file-input" name="attendance_excel" class="hidden"
+                            accept=".xlsx,.xls" onchange="updateFileName(this)" required>
+                    </div>
+                    <!-- Secondary Template Link for easy access -->
+                    <div
+                        class="flex justify-center mt-3 p-2 bg-emerald-50 dark:bg-emerald-500/5 rounded-xl border border-emerald-100 dark:border-emerald-500/10">
+                        <a id="file-source-sample-link" href="#"
+                            class="text-[10px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">download</span>
+                            Download Sample Excel Sheet
+                        </a>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-emerald-500/20 hover:bg-emerald-500 hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    Confirm & Process
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openUploadModal(subjectId, subjectName) {
+        const modal = document.getElementById('uploadModal');
+        const form = document.getElementById('modal-upload-form');
+        const downloadLink = document.getElementById('modal-download-link');
+        const sampleLink = document.getElementById('file-source-sample-link');
+        const subjectLabel = document.getElementById('modal-subject-name');
+
+        subjectLabel.textContent = subjectName;
+        form.action = `/attendance/faculty/upload-excel/${subjectId}/`;
+        downloadLink.href = `/attendance/faculty/download-template/${subjectId}/`;
+        sampleLink.href = downloadLink.href;
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeUploadModal() {
+        const modal = document.getElementById('uploadModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function updateFileName(input) {
+        if (input.files && input.files[0]) {
+            document.getElementById('file-name-label').textContent = input.files[0].name;
+            document.getElementById('file-name-label').classList.add('text-emerald-500');
+        }
+    }
+</script>
+{% endblock %}

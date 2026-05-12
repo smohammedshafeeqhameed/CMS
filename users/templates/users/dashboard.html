@@ -1,0 +1,228 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Dashboard - EduPulse{% endblock %}
+
+{% block header_title %}Student Intelligence Dashboard{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Hero / Welcome Section -->
+    <div class="relative overflow-hidden rounded-3xl bg-primary px-8 py-10 text-white shadow-2xl shadow-primary/20">
+        <div class="absolute right-0 top-0 -mr-20 -mt-20 size-64 rounded-full bg-white/10 blur-3xl"></div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="max-w-xl">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold mb-4">
+                    <span class="material-symbols-outlined text-sm">bolt</span>
+                    AI Powered Insights Ready
+                </div>
+                <h1 class="text-3xl md:text-4xl font-black mb-3">
+                    Welcome back, {% firstof user.first_name user.username %}!
+                </h1>
+                <p class="text-primary-100/80 text-lg leading-relaxed mb-6">
+                    Manage your academic journey, track career opportunities, and interact with specialized AI agents
+                    from your central hub.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    {% if user.is_student %}
+                    <a href="{% url 'student_profile_edit' %}"
+                        class="px-5 py-2.5 bg-white text-primary rounded-xl font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">person_edit</span>
+                        Update Profile
+                    </a>
+                    <a href="{% url 'internship_list' %}"
+                        class="px-5 py-2.5 bg-primary-dark/20 backdrop-blur-md border border-white/20 text-white rounded-xl font-black text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">work</span>
+                        Find Internships
+                    </a>
+                    {% elif user.is_placement_cell %}
+                    <a href="{% url 'create_job' %}"
+                        class="px-5 py-2.5 bg-white text-primary rounded-xl font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">add</span>
+                        Post Opportunity
+                    </a>
+                    <a href="{% url 'manage_jobs' %}"
+                        class="px-5 py-2.5 bg-primary-dark/20 backdrop-blur-md border border-white/20 text-white rounded-xl font-black text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">list</span>
+                        Manage Listings
+                    </a>
+                    {% elif user.is_faculty %}
+                    <a href="#"
+                        class="px-5 py-2.5 bg-white text-primary rounded-xl font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">group</span>
+                        View Mentees
+                    </a>
+                    <a href="#"
+                        class="px-5 py-2.5 bg-primary-dark/20 backdrop-blur-md border border-white/20 text-white rounded-xl font-black text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">done_all</span>
+                        Approve Requests
+                    </a>
+                    {% elif user.is_industry %}
+                    <a href="#"
+                        class="px-5 py-2.5 bg-white text-primary rounded-xl font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">person_tie</span>
+                        View Interns
+                    </a>
+                    <a href="#"
+                        class="px-5 py-2.5 bg-primary-dark/20 backdrop-blur-md border border-white/20 text-white rounded-xl font-black text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">comment</span>
+                        Submit Feedback
+                    </a>
+                    {% elif user.is_employer %}
+                    <a href="#"
+                        class="px-5 py-2.5 bg-white text-primary rounded-xl font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">work</span>
+                        Post Job
+                    </a>
+                    <a href="#"
+                        class="px-5 py-2.5 bg-primary-dark/20 backdrop-blur-md border border-white/20 text-white rounded-xl font-black text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">description</span>
+                        View Applications
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="hidden md:block">
+                <span class="material-symbols-outlined text-8xl opacity-40">hub</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div
+            class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm relative group overflow-hidden">
+            <div
+                class="absolute -right-4 -top-4 size-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all">
+            </div>
+            <div class="flex items-center gap-4 relative z-10">
+                <div class="size-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">trending_up</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Total Activities</p>
+                    <h3 class="text-3xl font-black">12</h3>
+                </div>
+            </div>
+        </div>
+        <div
+            class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm relative group overflow-hidden">
+            <div
+                class="absolute -right-4 -top-4 size-24 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition-all">
+            </div>
+            <div class="flex items-center gap-4 relative z-10">
+                <div class="size-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">schedule</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Pending Actions</p>
+                    <h3 class="text-3xl font-black">3</h3>
+                </div>
+            </div>
+        </div>
+        <div
+            class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm relative group overflow-hidden">
+            <div
+                class="absolute -right-4 -top-4 size-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-all">
+            </div>
+            <div class="flex items-center gap-4 relative z-10">
+                <div class="size-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">notifications_active</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Notifications</p>
+                    <h3 class="text-3xl font-black">5</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Activity Feed (2/3) -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-black tracking-tight">Recent Activity</h3>
+                <button class="text-sm font-bold text-primary hover:underline">View all</button>
+            </div>
+
+            <div class="space-y-4">
+                <div
+                    class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all group">
+                    <div class="flex gap-4">
+                        <div
+                            class="size-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-slate-500">description</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-1">Internship Application Submitted</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">Your application for "Frontend
+                                Developer" at TechCorp has been received.</p>
+                            <span class="text-xs font-medium text-slate-400">2 hours ago • Applications</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all group">
+                    <div class="flex gap-4">
+                        <div
+                            class="size-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-slate-500">school</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-1">New Grade Posted</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">Advanced Mathematics - Semester
+                                VI results are now available.</p>
+                            <span class="text-xs font-medium text-slate-400">Yesterday • Academics</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Components (1/3) -->
+        <div class="space-y-8">
+            <div>
+                <h3 class="text-xl font-black tracking-tight mb-6">Announcements</h3>
+                <div class="space-y-4">
+                    <div class="p-5 rounded-3xl bg-amber-500/5 border border-amber-500/10">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-amber-600 dark:text-amber-400">Semester Exams</h4>
+                            <span
+                                class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/10">Urgent</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">Final semester exam schedule has been
+                            released. Please check your hall tickets.</p>
+                        <span class="text-xs text-slate-400">3 days ago</span>
+                    </div>
+
+                    <div class="p-5 rounded-3xl bg-primary/5 border border-primary/10">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-primary">Internship Drive</h4>
+                            <span
+                                class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10">Update</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">Google Campus drive registration is
+                            open till Friday for all departments.</p>
+                        <span class="text-xs text-slate-400">1 week ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-3xl bg-slate-900 p-6 text-white relative overflow-hidden">
+                <div class="absolute right-0 bottom-0 -mb-4 -mr-4 opacity-10">
+                    <span class="material-symbols-outlined text-9xl">smart_toy</span>
+                </div>
+                <h4 class="text-lg font-black mb-2">Need Help?</h4>
+                <p class="text-slate-400 text-sm mb-4">Our AI academic assistant is available 24/7 to answer your
+                    queries.</p>
+                <button
+                    class="w-full py-3 bg-primary rounded-xl font-black shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-lg">chat_bubble</span>
+                    Chat with AI
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

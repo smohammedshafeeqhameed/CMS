@@ -1,0 +1,259 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Placement Analytics - EduPulse Pro{% endblock %}
+
+{% block header_title %}Institutional Intelligence Hub{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .chart-container {
+        position: relative;
+        height: 350px;
+        width: 100%;
+    }
+    
+    @keyframes countUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-count {
+        animation: countUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-7xl mx-auto pb-20">
+    <!-- Hero Section -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-4">
+                <span class="material-symbols-outlined text-sm">analytics</span>
+                Executive Intelligence Matrix
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-800 dark:text-white italic">
+                Placement <span class="text-primary">Analytics</span>
+            </h1>
+            <p class="text-slate-500 font-medium mt-2">Real-time recruitment performance telemetry and student success metrics.</p>
+        </div>
+        <div class="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-slate-400">
+            <span class="material-symbols-outlined text-emerald-500 animate-pulse">sensors</span>
+            Live Intelligence Stream
+        </div>
+    </div>
+
+    <!-- Key Metrics Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <!-- Total Students -->
+        <div class="glass-card p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl group hover:border-primary transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <div class="size-12 rounded-2xl bg-slate-100 dark:bg-slate-900 text-slate-500 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                    <span class="material-symbols-outlined">groups</span>
+                </div>
+            </div>
+            <div class="space-y-1">
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Talent Pool</h4>
+                <div class="text-4xl font-black italic text-slate-800 dark:text-white animate-count">{{ total_students }}</div>
+            </div>
+        </div>
+
+        <!-- Total Jobs -->
+        <div class="glass-card p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl group hover:border-indigo-500 transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <div class="size-12 rounded-2xl bg-slate-100 dark:bg-slate-900 text-slate-500 flex items-center justify-center group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
+                    <span class="material-symbols-outlined">work</span>
+                </div>
+            </div>
+            <div class="space-y-1">
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Deployed Leads</h4>
+                <div class="text-4xl font-black italic text-slate-800 dark:text-white animate-count">{{ total_postings }}</div>
+            </div>
+        </div>
+
+        <!-- Total Applications -->
+        <div class="glass-card p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl group hover:border-amber-500 transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <div class="size-12 rounded-2xl bg-slate-100 dark:bg-slate-900 text-slate-500 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all duration-500">
+                    <span class="material-symbols-outlined">description</span>
+                </div>
+            </div>
+            <div class="space-y-1">
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Engagement Vol</h4>
+                <div class="text-4xl font-black italic text-slate-800 dark:text-white animate-count">{{ total_applications }}</div>
+            </div>
+        </div>
+
+        <!-- Students Placed -->
+        <div class="glass-card p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl group hover:border-emerald-500 transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <div class="size-12 rounded-2xl bg-slate-100 dark:bg-slate-900 text-slate-500 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all duration-500">
+                    <span class="material-symbols-outlined">verified</span>
+                </div>
+            </div>
+            <div class="space-y-1">
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Success Vectors</h4>
+                <div class="text-4xl font-black italic text-emerald-500 animate-count">{{ placed_students }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizations Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <!-- Popularity Analytics -->
+        <div class="glass-card rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden group">
+            <div class="p-10 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
+                <div class="flex items-center gap-4">
+                    <div class="size-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined">bar_chart</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black italic text-slate-800 dark:text-white">Opportunity Popularity</h3>
+                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Global engagement by posting</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-10">
+                <div class="chart-container">
+                    <canvas id="jobsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Distribution -->
+        <div class="glass-card rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
+            <div class="p-10 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
+                <div class="flex items-center gap-4">
+                    <div class="size-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                        <span class="material-symbols-outlined">pie_chart</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black italic text-slate-800 dark:text-white">Funnel Status Distribution</h3>
+                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Application lifecycle telemetry</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-10 flex items-center justify-center">
+                <div class="chart-container max-w-sm">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const isDark = document.documentElement.classList.contains('dark');
+        const textColor = isDark ? '#94a3b8' : '#64748b';
+        const gridColor = isDark ? '#1e293b' : '#f1f5f9';
+
+        // Global Chart Defaults
+        Chart.defaults.color = textColor;
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.weight = 'bold';
+
+        // Jobs Popularity Chart
+        const jobCtx = document.getElementById('jobsChart').getContext('2d');
+        new Chart(jobCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ job_labels| safe }},
+                datasets: [{
+                    label: 'Applications',
+                    data: {{ job_data| safe }},
+                    backgroundColor: 'rgba(57, 107, 240, 0.8)',
+                    hoverBackgroundColor: 'rgba(57, 107, 240, 1)',
+                    borderRadius: 12,
+                    borderSkipped: false,
+                    barThickness: 32,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                        titleColor: isDark ? '#ffffff' : '#1e293b',
+                        bodyColor: isDark ? '#94a3b8' : '#64748b',
+                        padding: 12,
+                        cornerRadius: 12,
+                        borderColor: gridColor,
+                        borderWidth: 1,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: gridColor },
+                        border: { display: false },
+                        ticks: { stepSize: 1, font: { size: 10 } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: { font: { size: 10 } }
+                    }
+                }
+            }
+        });
+
+        // Status Distribution Chart
+        const statusData = {{ status_dist| safe }};
+        const statusLabels = statusData.map(item => item.status);
+        const statusCounts = statusData.map(item => item.count);
+
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: statusLabels,
+                datasets: [{
+                    data: statusCounts,
+                    backgroundColor: [
+                        '#396bf0', // Primary Blue
+                        '#8b5cf6', // Indigo
+                        '#f59e0b', // Amber
+                        '#10b981', // Emerald
+                        '#f43f5e'  // Rose
+                    ],
+                    borderWidth: 8,
+                    borderColor: isDark ? '#0f172a' : '#ffffff',
+                    hoverOffset: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: { size: 10, weight: 'bold' }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                        titleColor: isDark ? '#ffffff' : '#1e293b',
+                        bodyColor: isDark ? '#94a3b8' : '#64748b',
+                        padding: 12,
+                        cornerRadius: 12,
+                        borderColor: gridColor,
+                        borderWidth: 1,
+                        displayColors: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

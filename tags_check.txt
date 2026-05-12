@@ -1,0 +1,35 @@
+{% block title %}
+{% endblock %}
+{% block header_title %}
+{% endblock %}
+{% block content %}
+{% if profile.profile_photo %}
+{% else %}
+{% firstof user.first_name|first user.username|first|upper %}
+{% endif %}
+{% firstof user.get_full_name user.username %}
+{% if profile.batch %}
+{% if profile.linkedin_url %}
+{% endif %}
+{% if profile.github_url %}
+{% endif %}
+{% if profile.skills %}
+{% for skill in profile.skills.splitlines %}
+{% if skill.strip %}
+{% endif %}
+{% endfor %}
+{% else %}
+{% endif %}
+{% for cert in profile.user.certificates.all %}
+{% if cert.is_verified %}
+{% else %}
+{% endif %}
+{% empty %}
+{% endfor %}
+{% if profile.resume %}
+{% endif %}
+{% if profile.cover_letter %}
+{% endif %}
+{% if not profile.resume and not profile.cover_letter %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Delete Certificate - Campus Flow{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Delete Certificate</h4>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Are you sure you want to delete this certificate?</p>
+                    
+                    <div class="alert alert-warning">
+                        <strong>Certificate Details:</strong><br>
+                        <strong>Name:</strong> {{ certificate.name }}<br>
+                        <strong>Organization:</strong> {{ certificate.issuing_organization }}<br>
+                        <strong>Issue Date:</strong> {{ certificate.issue_date|date:"F d, Y" }}
+                    </div>
+                    
+                    <p class="text-muted">This action cannot be undone.</p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Yes, Delete
+                            </button>
+                            <a href="{% url 'certificate_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

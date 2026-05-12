@@ -1,0 +1,95 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Publish Announcement - EduPulse{% endblock %}
+
+{% block header_title %}Institutional Communication{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="glass-card p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl">
+        <div class="flex items-center gap-4 mb-8">
+            <div class="size-12 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">campaign</span>
+            </div>
+            <div>
+                <h2 class="text-2xl font-black">Publish Announcement</h2>
+                <p class="text-slate-500 text-sm">Send a broadcast to the college community</p>
+            </div>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Title</label>
+                    {{ form.title }}
+                </div>
+
+                <div class="md:col-span-2">
+                    <label
+                        class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Content</label>
+                    {{ form.content }}
+                </div>
+
+                <div>
+                    <label
+                        class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Category</label>
+                    {{ form.category }}
+                </div>
+
+                <div>
+                    <label
+                        class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Priority</label>
+                    {{ form.priority }}
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Target
+                        Audience</label>
+                    {{ form.target_audience }}
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Expiry
+                        Date</label>
+                    {{ form.expiry_date }}
+                </div>
+
+                <div class="md:col-span-2">
+                    <label
+                        class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Attachment</label>
+                    {{ form.attachment }}
+                </div>
+
+                <div class="flex items-center gap-2">
+                    {{ form.is_pinned }}
+                    <label class="text-xs font-black uppercase tracking-widest text-slate-500">Pin to top</label>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-4">
+                <a href="{% url 'announcement_list' %}"
+                    class="px-6 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all">Cancel</a>
+                <button type="submit"
+                    class="px-8 py-3 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+                    Publish Now
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    input[type="text"],
+    input[type="datetime-local"],
+    select,
+    textarea {
+        @apply w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all;
+    }
+
+    textarea {
+        min-height: 150px;
+    }
+</style>
+{% endblock %}

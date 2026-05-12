@@ -1,0 +1,147 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Faculty Directory - EduPulse{% endblock %}
+
+{% block header_title %}User Management{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-4xl">co_present</span>
+                Faculty Mentors
+            </h2>
+            <p class="text-slate-500 font-medium">Browse and manage the educational leadership team</p>
+        </div>
+        {% if user.is_super_admin or user.is_admin %}
+        <a href="{% url 'add_faculty' %}"
+            class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined">person_add</span>
+            Add Faculty Member
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Faculty Stats Bar -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass-card p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Total Mentors</p>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ faculty_members|length }}</h3>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Active Now</p>
+            <h3 class="text-2xl font-black text-emerald-500">{% if faculty_members %}{{ faculty_members|length }}{% else %}0{% endif %}</h3>
+        </div>
+    </div>
+
+    <!-- Faculty List Container -->
+    <div class="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        {% if faculty_members %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/50">
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Mentor Details
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Department
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Credential ID
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Experience
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500 text-right">
+                            Contact</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    {% for faculty in faculty_members %}
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                                    {{ faculty.username|first|upper }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-900 dark:text-white">{{ faculty.get_full_name|default:faculty.username }}</p>
+                                    <p class="text-xs text-slate-500">{{ faculty.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if faculty.department_fk %}
+                            <span
+                                class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-bold rounded-lg border border-slate-200 dark:border-slate-700">
+                                {{ faculty.department_fk.name }}
+                            </span>
+                            {% else %}
+                            <span class="text-sm italic text-slate-400 font-medium tracking-tight">General
+                                Faculty</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 font-mono text-sm font-bold text-slate-500">
+                            {{ faculty.employee_id|default:"FAL-00X" }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">
+                                {{ faculty.date_joined|date:"M Y" }}
+                                <span
+                                    class="block text-[10px] text-slate-400 font-black uppercase tracking-tighter">Joined
+                                    Date</span>
+                            </p>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                <a href="mailto:{{ faculty.email }}"
+                                    class="size-9 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white hover:border-primary transition-all group/btn"
+                                    title="Email Faculty">
+                                    <span class="material-symbols-outlined text-sm">mail</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-20 text-center">
+            <div
+                class="size-24 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-5xl text-slate-200 dark:text-slate-800">school</span>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Mentor List Empty</h3>
+            <p class="text-slate-500 max-w-sm mx-auto mb-8 font-medium">The faculty directory is currently empty. Start
+                by adding academic mentors to your departments.</p>
+            {% if user.is_super_admin or user.is_admin %}
+            <a href="{% url 'add_faculty' %}"
+                class="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl font-bold hover:scale-105 transition-all shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined">person_add</span> Add First Mentor
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Proactive Assistance Card -->
+    <div class="p-6 rounded-3xl bg-slate-900 text-white relative overflow-hidden">
+        <div class="absolute right-0 top-0 p-8 opacity-10">
+            <span class="material-symbols-outlined text-8xl">clinical_notes</span>
+        </div>
+        <div class="relative z-10 space-y-2">
+            <h4 class="font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">analytics</span>
+                Faculty Performance Insights
+            </h4>
+            <p class="text-slate-400 text-xs max-w-2xl leading-relaxed">
+                As an administrator, you can monitor departmental workload, subject assignments, and student feedback
+                for each mentor.
+                Use the **Academic Data** center specifically for faculty-to-subject mapping.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

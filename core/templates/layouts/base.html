@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Campus Flow{% endblock %}</title>
+    <!-- Times New Roman is a system font, no external font loading needed -->
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="bg-light">
+
+    <div class="{% if user.is_authenticated %}d-flex{% endif %}" id="wrapper">
+
+        {% if user.is_authenticated %}
+        <!-- Sidebar -->
+        <div class="bg-white border-end shadow-sm" id="sidebar-wrapper">
+            <div class="sidebar-heading text-center py-4 text-primary fs-4 fw-bold text-uppercase border-bottom">
+                <i class="fas fa-graduation-cap me-2"></i>Campus Flow
+            </div>
+            <div class="list-group list-group-flush my-3">
+                <a href="{% url 'dashboard' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-secondary fw-bold {% if request.resolver_match.url_name == 'dashboard' %}active text-white bg-primary{% endif %}">
+                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+
+                {% if user.is_student %}
+                <a href="{% url 'student_profile' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if request.resolver_match.url_name == 'student_profile' %}active{% endif %}">
+                    <i class="fas fa-user-circle me-2"></i>My Profile
+                </a>
+                <a href="{% url 'internship_list' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if request.resolver_match.url_name == 'internship_list' %}active{% endif %}">
+                    <i class="fas fa-briefcase me-2"></i>Internships
+                </a>
+                <a href="{% url 'application_list' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if request.resolver_match.url_name == 'application_list' %}active{% endif %}">
+                    <i class="fas fa-file-alt me-2"></i>Applications
+                </a>
+
+                {% elif user.is_faculty %}
+                <a href="#" class="list-group-item list-group-item-action bg-transparent text-white fw-bold">
+                    <i class="fas fa-users me-2"></i>My Mentees
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent text-white fw-bold">
+                    <i class="fas fa-check-circle me-2"></i>Approvals
+                </a>
+
+                {% elif user.is_super_admin %}
+                <a href="{% url 'admin_list' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if 'admin' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-user-shield me-2"></i>Admins
+                </a>
+                <a href="{% url 'hod_list' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if 'hod' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-user-tie me-2"></i>HODs
+                </a>
+                <a href="{% url 'faculty_list' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if 'faculty' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Faculty
+                </a>
+                <a href="{% url 'super_admin_department_list' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if 'department' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-building me-2"></i>Departments
+                </a>
+                <a href="{% url 'user_approval' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if 'approval' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-user-check me-2"></i>User Approvals
+                </a>
+
+                {% elif user.is_placement_cell %}
+                <a href="{% url 'student_list' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if 'student' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-user-graduate me-2"></i>Students
+                </a>
+                <a href="{% url 'manage_jobs' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if 'job' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-bullhorn me-2"></i>Postings
+                </a>
+                <a href="{% url 'placement_analytics' %}"
+                    class="list-group-item list-group-item-action bg-transparent text-white fw-bold {% if 'analytics' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-chart-line me-2"></i>Analytics
+                </a>
+                {% endif %}
+
+                <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold mt-3"
+                    onclick="document.getElementById('logout-form').submit();">
+                    <i class="fas fa-power-off me-2"></i>Logout
+                </a>
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        {% endif %}
+
+        <!-- Page Content -->
+        <div id="{% if user.is_authenticated %}page-content-wrapper{% else %}main-wrapper{% endif %}" class="w-100">
+
+            {% if user.is_authenticated %}
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+                <div class="container-fluid">
+                    <button class="btn btn-primary" id="menu-toggle"><i class="fas fa-bars"></i></button>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-bold" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user me-1"></i> {{ user.username }}
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="#"
+                                        onclick="document.getElementById('logout-form').submit();">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            {% endif %}
+
+            <div class="{% if user.is_authenticated %}container-fluid px-4 py-4{% else %}container mt-3{% endif %}">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm"
+                    role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% if user.is_authenticated %}
+    <script>
+        var el = document.getElementById("wrapper");
+        var toggleButton = document.getElementById("menu-toggle");
+
+        toggleButton.onclick = function () {
+            el.classList.toggle("toggled");
+        };
+    </script>
+    {% endif %}
+</body>
+
+</html>

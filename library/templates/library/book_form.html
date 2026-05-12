@@ -1,0 +1,153 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}{% if form.instance.pk %}Edit Book{% else %}Add New Book{% endif %} - EduPulse CMS{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <!-- Hero Section -->
+    <div class="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 p-8 lg:p-12">
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div class="space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-black uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-sm">edit_note</span>
+                    Inventory Management
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-black text-white tracking-tight">
+                    {% if form.instance.pk %}Update <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-400">Book Details</span>{% else %}Add <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-400">New Book</span>{% endif %}
+                </h1>
+                <p class="text-slate-400 font-medium max-w-2xl text-lg">
+                    {% if form.instance.pk %}Modify the information for {{ form.instance.title }}.{% else %}Enter the details to add a new title to the library catalog.{% endif %}
+                </p>
+            </div>
+        </div>
+        
+        <!-- Abstract Background -->
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/10 to-transparent"></div>
+        <div class="absolute -bottom-24 -right-24 size-96 bg-primary/20 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <form method="post" enctype="multipart/form-data" class="p-8 lg:p-12 space-y-8">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Title -->
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">title</span>
+                        Book Title
+                    </label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                    <p class="text-rose-500 text-xs font-bold">{{ form.title.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Author -->
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">person</span>
+                        Author
+                    </label>
+                    {{ form.author }}
+                    {% if form.author.errors %}
+                    <p class="text-rose-500 text-xs font-bold">{{ form.author.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- ISBN -->
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">barcode</span>
+                        ISBN
+                    </label>
+                    {{ form.isbn }}
+                    {% if form.isbn.errors %}
+                    <p class="text-rose-500 text-xs font-bold">{{ form.isbn.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Category -->
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">category</span>
+                        Category
+                    </label>
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                    <p class="text-rose-500 text-xs font-bold">{{ form.category.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- total_copies -->
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">inventory_2</span>
+                        Total Copies
+                    </label>
+                    {{ form.total_copies }}
+                    {% if form.total_copies.errors %}
+                    <p class="text-rose-500 text-xs font-bold">{{ form.total_copies.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- available_copies -->
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">check_circle</span>
+                        Available Copies
+                    </label>
+                    {{ form.available_copies }}
+                    {% if form.available_copies.errors %}
+                    <p class="text-rose-500 text-xs font-bold">{{ form.available_copies.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- location -->
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">location_on</span>
+                        Storage Location
+                    </label>
+                    {{ form.location }}
+                    {% if form.location.errors %}
+                    <p class="text-rose-500 text-xs font-bold">{{ form.location.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- cover_image -->
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">image</span>
+                        Cover Image
+                    </label>
+                    <div class="p-6 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-colors bg-slate-50/50 dark:bg-slate-900/50 group">
+                        {{ form.cover_image }}
+                    </div>
+                    {% if form.cover_image.errors %}
+                    <p class="text-rose-500 text-xs font-bold">{{ form.cover_image.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-4">
+                <a href="{% url 'library:book_list' %}" class="px-8 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-sm font-black hover:bg-slate-100 dark:hover:bg-slate-800 transition-all uppercase tracking-widest">
+                    Cancel
+                </a>
+                <button type="submit" class="px-12 py-3 rounded-2xl bg-primary text-white text-sm font-black hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 uppercase tracking-widest">
+                    {% if form.instance.pk %}Updates Book{% else %}Create Book{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        @apply w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-slate-900 dark:text-white;
+    }
+</style>
+{% endblock %}

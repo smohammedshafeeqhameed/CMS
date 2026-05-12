@@ -1,0 +1,118 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}HOD Management - EduPulse{% endblock %}
+
+{% block header_title %}System Governance{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                <span class="material-symbols-outlined text-emerald-500 text-4xl">badge</span>
+                Department Heads
+            </h2>
+            <p class="text-slate-500 font-medium">Coordinate and authorize access for Departmental HODs</p>
+        </div>
+        <a href="{% url 'hod_create' %}"
+            class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined">person_add</span>
+            New HOD Account
+        </a>
+    </div>
+
+    <!-- HOD Directory Table Container -->
+    <div class="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        {% if hods %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/50">
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Administrator
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Department
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Employee ID
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Status</th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500 text-right">
+                            Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    {% for hod in hods %}
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="size-10 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold">
+                                    {{ hod.username|first|upper }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-900 dark:text-white">{{ hod.get_full_name|default:hod.username }}</p>
+                                    <p class="text-xs text-slate-500">{{ hod.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if hod.department_fk %}
+                            <span
+                                class="px-3 py-1 bg-primary/5 text-primary text-[11px] font-bold rounded-full border border-primary/10">
+                                {{ hod.department_fk.name }}
+                            </span>
+                            {% else %}
+                            <p class="text-sm italic text-slate-400 font-medium">Unassigned</p>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 font-mono text-sm font-bold text-slate-600 dark:text-slate-400">
+                            {{ hod.employee_id|default:"-" }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if hod.is_active %}
+                            <span
+                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-wider border border-emerald-500/10">
+                                <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                Active
+                            </span>
+                            {% else %}
+                            <span
+                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-wider">
+                                <span class="size-1.5 rounded-full bg-slate-400"></span>
+                                Inactive
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2">
+                                <a href="mailto:{{ hod.email }}"
+                                    class="size-9 rounded-xl flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all border border-slate-100 dark:border-slate-800 shadow-sm"
+                                    title="Email HOD">
+                                    <span class="material-symbols-outlined text-sm">mail</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-20 text-center">
+            <div
+                class="size-24 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-5xl text-slate-200 dark:text-slate-800">badge</span>
+            </div>
+            <h3 class="text-2xl font-black mb-2">No HOD Accounts</h3>
+            <p class="text-slate-500 max-w-sm mx-auto mb-8 font-medium">Elevate your faculty members to HOD status to
+                delegate departmental leadership.</p>
+            <a href="{% url 'hod_create' %}"
+                class="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl font-bold shadow-xl shadow-primary/20">
+                <span class="material-symbols-outlined font-bold">person_add</span> Create New HOD
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Submissions - {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-primary text-[10px] font-black uppercase tracking-widest mb-4">
+                <span class="material-symbols-outlined text-sm">group</span>
+                Cohort Synchronization
+            </div>
+            <h1 class="text-3xl font-black tracking-tight italic text-slate-800 dark:text-white">Review <span class="text-primary">Submissions</span></h1>
+            <p class="text-slate-500 dark:text-slate-400 font-medium italic">Validating student artifacts for: {{ assignment.title }}</p>
+        </div>
+        <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-6">
+            <div class="text-center">
+                <p class="text-[10px] font-black text-slate-400 uppercase">Submissions</p>
+                <p class="text-2xl font-black italic">{{ submissions.count }}</p>
+            </div>
+            <div class="w-px h-8 bg-slate-200 dark:bg-slate-700"></div>
+            <div class="text-center">
+                <p class="text-[10px] font-black text-slate-400 uppercase">Graded</p>
+                <p class="text-2xl font-black italic text-emerald-500">{{ assignment.submissions.filter.marks_obtained.count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submissions Table -->
+    <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/50 dark:bg-slate-800/30">
+                        <th class="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Student Profile</th>
+                        <th class="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Temporal Stamp</th>
+                        <th class="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
+                        <th class="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Validation</th>
+                        <th class="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    {% for submission in submissions %}
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="size-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-black italic text-slate-500">
+                                    {{ submission.student.get_full_name|slice:":1" }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 dark:text-white">{{ submission.student.get_full_name }}</p>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase">{{ submission.student.username }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <p class="text-xs font-bold text-slate-600 dark:text-slate-400">{{ submission.submitted_at|date:"M d, Y" }}</p>
+                            <p class="text-[10px] text-slate-400 font-medium">{{ submission.submitted_at|date:"H:i" }}</p>
+                        </td>
+                        <td class="px-8 py-6">
+                            {% if submission.is_late %}
+                            <span class="px-3 py-1 bg-rose-500/10 text-rose-500 text-[10px] font-black uppercase rounded-lg border border-rose-500/20">Late</span>
+                            {% else %}
+                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase rounded-lg border border-emerald-500/20">On-Time</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-8 py-6">
+                            {% if submission.marks_obtained is not None %}
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+                                <span class="font-black italic text-slate-800 dark:text-white">{{ submission.marks_obtained }}<span class="text-[10px] opacity-30 italic">/{{ assignment.max_marks }}</span></span>
+                            </div>
+                            {% else %}
+                            <span class="text-xs font-bold text-slate-400 italic">Pending Gradient</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <div class="flex items-center justify-end gap-3">
+                                <a href="{{ submission.submission_file.url }}" target="_blank" class="size-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:bg-primary hover:text-white transition-all">
+                                    <span class="material-symbols-outlined">download</span>
+                                </a>
+                                <a href="{% url 'grade_submission' submission.pk %}" class="px-4 py-2 bg-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all">
+                                    Grade
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-8 py-20 text-center">
+                            <p class="text-slate-500 italic font-medium">No synchronization artifacts received from students yet.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Add Certificate - Campus Flow{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-certificate me-2"></i>Add New Certificate</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">Certificate Name *</label>
+                            {% if form.name.errors %}
+                            <div class="text-danger small">{{ form.name.errors }}</div>
+                            {% endif %}
+                            <input type="text" name="name" id="{{ form.name.id_for_label }}" 
+                                class="form-control" value="{{ form.name.value|default:'' }}" required>
+                            <small class="form-text text-muted">e.g., Python Programming, Machine Learning Fundamentals</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.issuing_organization.id_for_label }}" class="form-label">Issuing Organization *</label>
+                            {% if form.issuing_organization.errors %}
+                            <div class="text-danger small">{{ form.issuing_organization.errors }}</div>
+                            {% endif %}
+                            <input type="text" name="issuing_organization" id="{{ form.issuing_organization.id_for_label }}" 
+                                class="form-control" value="{{ form.issuing_organization.value|default:'' }}" required>
+                            <small class="form-text text-muted">e.g., Coursera, Udemy, Google, Microsoft</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.issue_date.id_for_label }}" class="form-label">Issue Date *</label>
+                            {% if form.issue_date.errors %}
+                            <div class="text-danger small">{{ form.issue_date.errors }}</div>
+                            {% endif %}
+                            <input type="date" name="issue_date" id="{{ form.issue_date.id_for_label }}" 
+                                class="form-control" value="{{ form.issue_date.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.certificate_file.id_for_label }}" class="form-label">Certificate File *</label>
+                            {% if form.certificate_file.errors %}
+                            <div class="text-danger small">{{ form.certificate_file.errors }}</div>
+                            {% endif %}
+                            <input type="file" name="certificate_file" id="{{ form.certificate_file.id_for_label }}" 
+                                class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                            <small class="form-text text-muted">Upload PDF or image file (PDF, JPG, PNG)</small>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Note:</strong> Your certificate will be reviewed by faculty before verification. 
+                            Once verified, you'll receive a skill badge.
+                        </div>
+                        
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Add Certificate
+                            </button>
+                            <a href="{% url 'certificate_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

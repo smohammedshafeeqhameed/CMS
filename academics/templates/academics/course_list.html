@@ -1,0 +1,93 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Academic Courses - EduPulse Pro{% endblock %}
+
+{% block header_title %}Academic Architecture{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-4">
+                <span class="material-symbols-outlined text-sm">academics</span>
+                Degree Programs
+            </div>
+            <h1 class="text-3xl font-black tracking-tight italic">Course <span class="text-primary">Portfolio</span></h1>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">Manage and monitor institutional degree offerrings</p>
+        </div>
+        <a href="{% url 'course_create' %}"
+            class="px-8 py-4 bg-primary text-white rounded-2xl font-black text-sm shadow-2xl shadow-primary/30 hover:scale-[1.05] active:scale-[0.95] transition-all flex items-center gap-3 w-fit uppercase tracking-widest">
+            <span class="material-symbols-outlined font-black">add_circle</span>
+            Initialize Course
+        </a>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for course in courses %}
+        <div class="glass-card rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 group overflow-hidden relative">
+            <div class="absolute top-0 right-0 p-6">
+                <span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg uppercase tracking-tighter italic border border-primary/20">
+                    {{ course.code }}
+                </span>
+            </div>
+            
+            <div class="p-8">
+                <div class="size-16 rounded-2xl bg-slate-900 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <span class="material-symbols-outlined text-3xl text-primary">school</span>
+                </div>
+                
+                <h3 class="text-xl font-black mb-2 text-slate-800 dark:text-white italic group-hover:text-primary transition-colors">
+                    {{ course.name }}
+                </h3>
+                
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base text-slate-400">corporate_fare</span>
+                        <span class="text-xs font-bold text-slate-500">{{ course.department.code }}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base text-slate-400">schedule</span>
+                        <span class="text-xs font-bold text-slate-500">{{ course.duration_years }} Years</span>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-500 line-clamp-2 mb-8 leading-relaxed font-medium capitalize">
+                    {{ course.description|default:"No description provided for this academic program." }}
+                </p>
+
+                <div class="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800/50">
+                    <div class="flex items-center gap-3">
+                        <a href="{% url 'course_edit' course.pk %}" class="size-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-primary hover:text-white flex items-center justify-center transition-all shadow-sm">
+                            <span class="material-symbols-outlined text-lg">edit_note</span>
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        {% if course.is_active %}
+                        <span class="size-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
+                        <span class="text-[10px] font-black uppercase text-emerald-500 tracking-widest italic">Active</span>
+                        {% else %}
+                        <span class="size-2 rounded-full bg-rose-500"></span>
+                        <span class="text-[10px] font-black uppercase text-rose-500 tracking-widest italic">Inactive</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full py-20 glass-card rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center">
+            <div class="size-24 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-6 opacity-50">
+                <span class="material-symbols-outlined text-5xl text-slate-400">auto_stories</span>
+            </div>
+            <h3 class="text-2xl font-black mb-2 italic">No Courses Detected</h3>
+            <p class="text-slate-500 max-w-sm font-medium">Initialize your first degree program to begin academic management.</p>
+            <a href="{% url 'course_create' %}" class="mt-8 text-primary font-black uppercase tracking-widest text-xs hover:underline flex items-center gap-2 italic">
+                Initialize Course <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

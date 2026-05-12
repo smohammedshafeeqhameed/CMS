@@ -1,0 +1,38 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Remove Mapping - EduPulse{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-xl mx-auto py-12">
+    <div
+        class="glass-card p-10 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl text-center space-y-8">
+        <div class="size-24 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-6xl">link_off</span>
+        </div>
+
+        <div class="space-y-4">
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white leading-tight">Dissolve Academic Mapping?</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-lg leading-relaxed">
+                You are about to remove <span class="font-black text-slate-900 dark:text-white">{{
+                    object.faculty.get_full_name }}</span>
+                as the advisor for <span class="font-black text-slate-900 dark:text-white">{{ object.course.code }} Sem
+                    {{ object.semester }}</span>.
+                This action is reversible but will immediately remove their mentorship visibility.
+            </p>
+        </div>
+
+        <form method="post" class="flex flex-col gap-4 pt-4">
+            {% csrf_token %}
+            <button type="submit"
+                class="w-full px-8 py-5 bg-red-500 text-white rounded-2xl font-black text-lg shadow-xl shadow-red-500/20 hover:bg-red-600 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined font-black text-2xl">delete_forever</span>
+                Confirm Dissolution
+            </button>
+            <a href="{% url 'advisor_list' %}"
+                class="w-full px-8 py-5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-2xl font-black text-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                Keep Mapping
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

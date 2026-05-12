@@ -1,0 +1,122 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Departments - EduPulse{% endblock %}
+
+{% block header_title %}System Governance{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-4xl">corporate_fare</span>
+                Academic Departments
+            </h2>
+            <p class="text-slate-500 font-medium">Configure and manage institutional departments and their leadership
+            </p>
+        </div>
+        <a href="{% url 'super_admin_department_create' %}"
+            class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined">add_business</span>
+            Create New Department
+        </a>
+    </div>
+
+    <!-- Departments List Container -->
+    <div class="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        {% if departments %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/50">
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Department
+                            Name</th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Code</th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Dept. Head
+                            (HOD)</th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Status</th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500 text-right">
+                            Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    {% for department in departments %}
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+                        <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                                <span class="font-black text-slate-900 dark:text-white">{{ department.name }}</span>
+                                <span
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Established {{ department.created_at|date:"Y" }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-sm font-bold text-primary tracking-tight">
+                            <span class="px-2 py-0.5 rounded-lg bg-primary/10 border border-primary/20">{{ department.code }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if department.hod %}
+                            <div class="flex items-center gap-2">
+                                <div
+                                    class="size-8 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center justify-center font-bold text-[10px]">
+                                    {{ department.hod.username|first|upper }}
+                                </div>
+                                <a href="mailto:{{ department.hod.email }}"
+                                    class="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-primary hover:underline transition-all">
+                                    {{ department.hod.get_full_name|default:department.hod.username }}
+                                </a>
+                            </div>
+                            {% else %}
+                            <p class="text-sm italic text-slate-400 font-medium tracking-tight">No HOD Assigned</p>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if department.is_active %}
+                            <span
+                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-wider border border-emerald-500/10">
+                                <span class="size-1.5 rounded-full bg-emerald-500"></span> Active
+                            </span>
+                            {% else %}
+                            <span
+                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-wider border border-slate-200 dark:border-slate-800">
+                                <span class="size-1.5 rounded-full bg-slate-400"></span> Inactive
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                <a href="{% url 'super_admin_department_edit' department.pk %}"
+                                    class="size-9 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary transition-all shadow-sm border border-slate-100 dark:border-slate-800">
+                                    <span class="material-symbols-outlined text-sm">edit</span>
+                                </a>
+                                <a href="{% url 'super_admin_department_delete' department.pk %}"
+                                    class="size-9 rounded-xl flex items-center justify-center text-slate-400 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all shadow-sm border border-slate-100 dark:border-slate-800"
+                                    onclick="return confirm('Are you sure you want to delete this department? This action cannot be undone.');">
+                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-20 text-center">
+            <div
+                class="size-24 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
+                <span
+                    class="material-symbols-outlined text-5xl text-slate-200 dark:text-slate-800">corporate_fare</span>
+            </div>
+            <h3 class="text-2xl font-black mb-2">No Departments Commissioned</h3>
+            <p class="text-slate-500 max-w-sm mx-auto mb-8 font-medium">Create and structure your university's
+                departments to start organizing faculty and students.</p>
+            <a href="{% url 'super_admin_department_create' %}"
+                class="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-all">
+                <span class="material-symbols-outlined">add_business</span> Commission First Dept.
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

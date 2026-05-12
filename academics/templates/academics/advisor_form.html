@@ -1,0 +1,126 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}{% if form.instance.pk %}Update Mapping{% else %}New Faculty Mapping{% endif %} - EduPulse{% endblock%}
+
+{% block header_title %}Governance Tool{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-2xl mx-auto space-y-8">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-black tracking-tight">
+                {% if form.instance.pk %}Refine Mapping{% else %}Establish Mapping{% endif %}
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400">Map a faculty member to a specific semester cohort</p>
+        </div>
+        <a href="{% url 'advisor_list' %}"
+            class="px-4 py-2 text-sm font-bold text-slate-500 hover:text-primary transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+            Back to List
+        </a>
+    </div>
+
+    <form method="post" class="space-y-8">
+        {% csrf_token %}
+
+        <div class="glass-card p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+            <div class="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
+                <div class="size-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">link</span>
+                </div>
+                <h3 class="text-xl font-black">Advisor Definition</h3>
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="p-4 rounded-xl bg-red-500/10 text-red-500 border border-red-500/20 text-sm font-medium">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <div class="space-y-6">
+                <!-- Faculty Selection -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-black uppercase tracking-widest text-slate-500">Designated
+                        Faculty</label>
+                    {{ form.faculty }}
+                    {% if form.faculty.errors %}
+                    <p class="text-red-500 text-xs font-bold">{{ form.faculty.errors.as_text }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Content/Course Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-black uppercase tracking-widest text-slate-500">Academic
+                            Program</label>
+                        {{ form.course }}
+                        {% if form.course.errors %}
+                        <p class="text-red-500 text-xs font-bold">{{ form.course.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-black uppercase tracking-widest text-slate-500">Target
+                            Semester</label>
+                        {{ form.semester }}
+                        {% if form.semester.errors %}
+                        <p class="text-red-500 text-xs font-bold">{{ form.semester.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Academic Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-black uppercase tracking-widest text-slate-500">Academic
+                            Year</label>
+                        {{ form.academic_year }}
+                        {% if form.academic_year.errors %}
+                        <p class="text-red-500 text-xs font-bold">{{ form.academic_year.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-black uppercase tracking-widest text-slate-500">Section
+                            (Optional)</label>
+                        {{ form.section }}
+                        {% if form.section.errors %}
+                        <p class="text-red-500 text-xs font-bold">{{ form.section.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Logic Control -->
+                <div class="flex items-center gap-3 pt-2">
+                    {{ form.is_active }}
+                    <label class="text-sm font-bold text-slate-600 dark:text-slate-400">Currently Active Mapping</label>
+                </div>
+
+                {{ form.department }}
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-center gap-4 pt-4">
+            <button type="submit"
+                class="w-full md:w-auto px-10 py-4 bg-primary text-white rounded-2xl font-black text-lg shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined font-black">verified</span>
+                {% if form.instance.pk %}Commit Changes{% else %}Establish Mapping{% endif %}
+            </button>
+            <a href="{% url 'advisor_list' %}"
+                class="w-full md:w-auto px-8 py-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-2xl font-bold text-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+    select,
+    input[type="text"],
+    input[type="number"] {
+        @apply w-full h-12 bg-white/5 dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-xl px-4 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900 dark:text-white font-medium;
+    }
+
+    input[type="checkbox"] {
+        @apply size-5 rounded border-slate-300 text-primary focus:ring-primary transition-all;
+    }
+</style>
+{% endblock %}

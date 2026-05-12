@@ -1,0 +1,47 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Dashboard - SkillBridge{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Dashboard</h1>
+        <span class="badge badge-success">{{ role }}</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        <!-- Welcome Card -->
+        <div class="card glass-card" style="grid-column: 1 / -1;">
+            <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
+            <p style="color: var(--text-muted);">Manage your potential with SkillBridge.</p>
+        </div>
+
+        <!-- Stats Cards implementation pending specific dashboards -->
+        <div class="card">
+            <h3 style="font-size: 1.1rem; color: var(--text-muted);">Quick Actions</h3>
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                {% if user.is_student %}
+                <a href="{% url 'student_profile_edit' %}" class="btn btn-primary">Complete Profile</a>
+                <a href="{% url 'internship_list' %}" class="btn btn-outline">Find Internships</a>
+                {% elif user.is_placement_cell %}
+                <a href="{% url 'create_job' %}" class="btn btn-primary">Post Opportunity</a>
+                <a href="{% url 'placement_analytics' %}" class="btn btn-outline">View Analytics</a>
+                <a href="{% url 'manage_jobs' %}" class="btn btn-outline">Student list</a>
+
+                {% elif user.is_faculty %}
+                <a href="#" class="btn btn-primary">My Mentees</a>
+                <a href="#" class="btn btn-outline">Approve Internships</a>
+
+                {% elif user.is_industry %}
+                <a href="#" class="btn btn-primary">View Interns</a>
+                <a href="#" class="btn btn-outline">Submit Feedback</a>
+
+                {% elif user.is_employer %}
+                <a href="#" class="btn btn-primary">Post Job</a>
+                <a href="#" class="btn btn-outline">View Applications</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

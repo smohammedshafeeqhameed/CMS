@@ -1,0 +1,161 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Admin Management - EduPulse{% endblock %}
+
+{% block header_title %}System Governance{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-4xl">shield_person</span>
+                Admin Accounts
+            </h2>
+            <p class="text-slate-500 font-medium">Manage top-level administrative privileges across the institution</p>
+        </div>
+        <a href="{% url 'admin_create' %}"
+            class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined">person_add</span>
+            Create New Admin
+        </a>
+    </div>
+
+    <!-- Stats Ticker (Optional but looks premium) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="glass-card p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+            <div class="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined">verified_user</span>
+            </div>
+            <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">Total Admins</p>
+                <h4 class="text-xl font-black">{{ admins|length }}</h4>
+            </div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+            <div class="size-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
+            <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">Active Status</p>
+                <h4 class="text-xl font-black">{% if admins %}{{ admins|length }}{% else %}0{% endif %}</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Table Container -->
+    <div class="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        {% if admins %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/50">
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Administrator
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Credential ID
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Department
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Designation
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Status</th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500 text-right">
+                            Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    {% for admin in admins %}
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                                    {{ admin.username|first|upper }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-900 dark:text-white">{{ admin.get_full_name|default:admin.username }}</p>
+                                    <p class="text-xs text-slate-500">{{ admin.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm font-bold text-slate-600 dark:text-slate-400 font-mono tracking-tight">
+                                {{ admin.employee_id|default:"N/A" }}
+                            </p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
+                                {{ admin.department_fk.name|default:"General Admin" }}
+                            </p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm text-slate-500">{{ admin.designation|default:"Administrator" }}</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if admin.is_active %}
+                            <span
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-wider border border-emerald-500/20">
+                                <span class="size-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Active
+                            </span>
+                            {% else %}
+                            <span
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-wider border border-slate-200 dark:border-slate-700">
+                                <span class="size-1.5 rounded-full bg-slate-400"></span>
+                                Inactive
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2">
+                                <a href="mailto:{{ admin.email }}"
+                                    class="size-9 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white hover:border-primary transition-all group/btn"
+                                    title="Send Email">
+                                    <span class="material-symbols-outlined text-sm">mail</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-20 text-center">
+            <div
+                class="size-24 rounded-full bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 flex items-center justify-center mx-auto mb-8">
+                <span class="material-symbols-outlined text-5xl text-slate-200 dark:text-slate-800">group_off</span>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2">No Administrators Found</h3>
+            <p class="text-slate-500 max-w-sm mx-auto mb-8 font-medium">You haven't created any administrative accounts
+                yet. Add your first admin to start delegating control.</p>
+            <a href="{% url 'admin_create' %}"
+                class="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl font-bold hover:scale-105 transition-all shadow-xl shadow-primary/20">
+                <span class="material-symbols-outlined">person_add</span>
+                Add First Admin
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Info Footer -->
+    <div class="p-6 rounded-3xl bg-slate-900 text-white relative overflow-hidden">
+        <div class="absolute right-0 top-0 p-8 opacity-10">
+            <span class="material-symbols-outlined text-8xl">info</span>
+        </div>
+        <div class="relative z-10">
+            <h4 class="font-bold flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-primary">verified</span>
+                Administrative Privileges
+            </h4>
+            <p class="text-slate-400 text-sm max-w-2xl">
+                Admins have full access to academic data, user enrollment, and institutional announcements.
+                Ensure that all administrator accounts are secured with strong passwords and used only by authorized
+                personnel.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

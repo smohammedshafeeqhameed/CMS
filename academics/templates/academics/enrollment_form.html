@@ -1,0 +1,67 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Student Enrollment - EduPulse{% endblock %}
+
+{% block header_title %}Academic Administration{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="glass-card p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl">
+        <div class="flex items-center gap-4 mb-8">
+            <div class="size-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">app_registration</span>
+            </div>
+            <div>
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white">Student Enrollment</h2>
+                <p class="text-slate-500 text-sm">Enroll a student into a course and academic batch</p>
+            </div>
+        </div>
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for field in form %}
+                <div
+                    class="{% if field.name == 'student' or field.name == 'course' %}md:col-span-2{% endif %} space-y-1.5">
+                    <label for="{{ field.id_for_label }}"
+                        class="block text-xs font-black uppercase tracking-widest text-slate-500">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <p class="text-[10px] text-slate-400 font-medium">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% if field.errors %}
+                    <p class="text-red-500 text-[10px] font-bold">{{ field.errors.as_text }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="pt-8 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-4">
+                <button type="submit"
+                    class="px-8 py-3 bg-primary text-white rounded-xl font-bold hover:scale-105 transition-all shadow-lg shadow-primary/20">
+                    Process Enrollment
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea,
+    input[type="number"] {
+        @apply w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all;
+    }
+</style>
+{% endblock %}

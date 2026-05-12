@@ -1,0 +1,265 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Provision Faculty - EduPulse CMS{% endblock %}
+
+{% block header_title %}System Governance{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto animate-fade-in pb-20">
+    <!-- Breadcrumb / Back Button -->
+    <div class="mb-8">
+        <a href="{% url 'faculty_list' %}"
+            class="group inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-all font-bold text-sm">
+            <span
+                class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            Back to Faculty Directory
+        </a>
+    </div>
+
+    <!-- Header Section (Landing Page Style) -->
+    <div class="relative mb-12 p-10 rounded-[2.5rem] bg-slate-900 overflow-hidden shadow-2xl">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 size-80 bg-primary/20 rounded-full blur-[100px] animate-pulse">
+        </div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 size-64 bg-blue-500/10 rounded-full blur-[80px]"></div>
+
+        <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+            <div
+                class="size-20 rounded-3xl bg-primary/20 backdrop-blur-xl border border-primary/30 flex items-center justify-center shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined text-5xl text-primary font-bold">co_present</span>
+            </div>
+            <div class="text-center md:text-left">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-widest uppercase mb-3">
+                    <span class="material-symbols-outlined text-sm">school</span>
+                    Academic Excellence
+                </div>
+                <h2 class="text-4xl font-black text-white tracking-tight mb-2">Provision Faculty</h2>
+                <p class="text-slate-400 font-medium max-w-xl">Onboard a new faculty mentor to the institution. Faculty
+                    accounts include course management, student evaluation, and mentorship tooling.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Form Card (Landing Page Glass Card Style) -->
+    <div class="glass-card p-1 md:p-12 rounded-[3rem] border border-white/5 shadow-2xl bg-white/5 backdrop-blur-2xl">
+        <form method="post" class="p-8 md:p-4 space-y-12">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div
+                class="p-5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-bold flex items-center gap-3">
+                <span class="material-symbols-outlined">error</span>
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <!-- Form Content Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+
+                <!-- Account Identity Block -->
+                <div class="space-y-8">
+                    <div class="flex items-center gap-3 border-b border-white/10 pb-4">
+                        <span class="material-symbols-outlined text-primary">id_card</span>
+                        <h3 class="text-lg font-black text-white tracking-tight">Account Identity</h3>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Faculty
+                                Username <span class="text-primary">*</span></label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl transition-colors group-focus-within:text-primary">person</span>
+                                <input type="text" name="username"
+                                    class="w-full pl-12 pr-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white font-medium"
+                                    placeholder="e.g. prof_smith" value="{{ form.username.value|default:'' }}" required>
+                            </div>
+                            {% if form.username.errors %}<p class="text-red-500 text-[10px] font-bold mt-2 ml-1">{{
+                                form.username.errors.as_text }}</p>{% endif %}
+                        </div>
+
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Academic
+                                Email <span class="text-primary">*</span></label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl transition-colors group-focus-within:text-primary">alternate_email</span>
+                                <input type="email" name="email"
+                                    class="w-full pl-12 pr-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white font-medium"
+                                    placeholder="faculty@edupulse.edu" value="{{ form.email.value|default:'' }}"
+                                    required>
+                            </div>
+                            {% if form.email.errors %}<p class="text-red-500 text-[10px] font-bold mt-2 ml-1">{{
+                                form.email.errors.as_text }}</p>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Credentials Block -->
+                <div class="space-y-8">
+                    <div class="flex items-center gap-3 border-b border-white/10 pb-4">
+                        <span class="material-symbols-outlined text-primary">security</span>
+                        <h3 class="text-lg font-black text-white tracking-tight">Security Credentials</h3>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Temporary
+                                Password <span class="text-primary">*</span></label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl transition-colors group-focus-within:text-primary">lock_open</span>
+                                <input type="password" name="password1"
+                                    class="w-full pl-12 pr-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white"
+                                    placeholder="••••••••" required>
+                            </div>
+                            {% if form.password1.errors %}<p class="text-red-500 text-[10px] font-bold mt-2 ml-1">{{
+                                form.password1.errors.as_text }}</p>{% endif %}
+                        </div>
+
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Confirm
+                                Security <span class="text-primary">*</span></label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl transition-colors group-focus-within:text-primary">verified</span>
+                                <input type="password" name="password2"
+                                    class="w-full pl-12 pr-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white"
+                                    placeholder="••••••••" required>
+                            </div>
+                            {% if form.password2.errors %}<p class="text-red-500 text-[10px] font-bold mt-2 ml-1">{{
+                                form.password2.errors.as_text }}</p>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Profile (Full Width Section) -->
+                <div class="md:col-span-2 space-y-8 pt-6">
+                    <div class="flex items-center gap-3 border-b border-white/10 pb-4">
+                        <span class="material-symbols-outlined text-primary">school</span>
+                        <h3 class="text-lg font-black text-white tracking-tight">Academic Profile</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">First
+                                Name</label>
+                            <input type="text" name="first_name"
+                                class="w-full px-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white font-medium"
+                                value="{{ form.first_name.value|default:'' }}">
+                        </div>
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Last
+                                Name</label>
+                            <input type="text" name="last_name"
+                                class="w-full px-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white font-medium"
+                                value="{{ form.last_name.value|default:'' }}">
+                        </div>
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Faculty/Employee
+                                ID <span class="text-primary">*</span></label>
+                            <input type="text" name="employee_id"
+                                class="w-full px-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white font-mono tracking-wider font-bold"
+                                placeholder="FAC-XXXX" value="{{ form.employee_id.value|default:'' }}" required>
+                            {% if form.employee_id.errors %}<p class="text-red-500 text-[10px] font-bold mt-2 ml-1">{{
+                                form.employee_id.errors.as_text }}</p>{% endif %}
+                        </div>
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Current
+                                Designation</label>
+                            <input type="text" name="designation"
+                                class="w-full px-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white font-medium"
+                                value="{{ form.designation.value|default:'' }}" placeholder="e.g. Assistant Professor">
+                        </div>
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Phone
+                                Number</label>
+                            <input type="text" name="phone_number"
+                                class="w-full px-4 h-14 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white font-medium"
+                                value="{{ form.phone_number.value|default:'' }}" placeholder="+91 XXXXX XXXXX">
+                        </div>
+                        <div class="group">
+                            <label
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Department
+                                Allocation <span class="text-primary">*</span></label>
+                            <div class="relative select-container">
+                                {{ form.department_fk }}
+                                <style type="text/tailwindcss">
+                                    .select-container select {
+                                        @apply w-full h-14 px-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-white font-medium appearance-none cursor-pointer;
+                                    }
+                                    .select-container select option {
+                                        @apply bg-slate-900 text-white;
+                                    }
+                                </style>
+                                <div
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                    <span class="material-symbols-outlined">expand_more</span>
+                                </div>
+                            </div>
+                            {% if form.department_fk.errors %}<p class="text-red-500 text-[10px] font-bold mt-2 ml-1">{{
+                                form.department_fk.errors.as_text }}</p>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Section -->
+            <div class="pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="flex items-center gap-4 group">
+                    <div
+                        class="size-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-blue-500">assignment_ind</span>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-xs font-black text-white uppercase tracking-widest">Immediate Activation</p>
+                        <p class="text-[10px] text-slate-500 font-medium">Faculty will receive system-wide access upon
+                            save.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <a href="{% url 'faculty_list' %}"
+                        class="flex-1 md:flex-none h-14 px-8 rounded-2xl flex items-center justify-center font-black text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase tracking-widest text-xs border border-transparent hover:border-white/10">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                        class="flex-1 md:flex-none h-14 px-12 bg-primary text-white rounded-2xl font-black shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-xs">
+                        Finalize & Onboard
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Custom Scrollbar for the dark theme */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+</style>
+{% endblock %}

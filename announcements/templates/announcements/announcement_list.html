@@ -1,0 +1,89 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Announcements - EduPulse{% endblock %}
+
+{% block header_title %}Institutional Communication{% endblock %}
+
+{% block content %}
+<div class="space-y-8 max-w-5xl mx-auto">
+    <!-- Action Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-3xl font-black">All Announcements</h2>
+            <p class="text-slate-500 font-medium">Broadcasts across the college campus</p>
+        </div>
+        {% if user.is_super_admin or user.is_admin %}
+        <a href="{% url 'announcement_create' %}"
+            class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined">add_task</span> Publish New
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Announcement Feed -->
+    <div class="space-y-4">
+        {% for announcement in announcements %}
+        <div
+            class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-primary/50 transition-all">
+            {% if announcement.is_pinned %}
+            <div class="absolute right-0 top-0 p-4">
+                <span class="material-symbols-outlined text-amber-500 text-sm">push_pin</span>
+            </div>
+            {% endif %}
+
+            <div class="flex items-start gap-6">
+                <div
+                    class="size-16 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col items-center justify-center text-center shrink-0">
+                    <span class="text-[10px] font-black uppercase text-slate-400">{{ announcement.posted_at|date:"M" }}</span>
+                    <span class="text-2xl font-black text-slate-900 dark:text-white">{{ announcement.posted_at|date:"d" }}</span>
+                </div>
+
+                <div class="space-y-3 flex-1">
+                    <div class="flex items-center gap-2">
+                        <span
+                            class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-wider">
+                            {{ announcement.category.name|default:"General" }}
+                        </span>
+                        {% if announcement.priority == 'URGENT' %}
+                        <span
+                            class="px-2 py-0.5 rounded-full bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-wider">
+                            Urgent
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <h3 class="text-xl font-black group-hover:text-primary transition-colors">
+                        <a href="{% url 'announcement_detail' announcement.pk %}">{{ announcement.title }}</a>
+                    </h3>
+
+                    <p class="text-slate-500 text-sm line-clamp-2">{{ announcement.content }}</p>
+
+                    <div class="flex items-center gap-4 pt-2 text-xs font-bold text-slate-400">
+                        <span class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">person</span>
+                            By {{ announcement.posted_by.get_full_name|default:announcement.posted_by.username }}
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">groups_3</span>
+                            Target: {{ announcement.get_target_audience_display }}
+                        </span>
+                    </div>
+                </div>
+
+                <a href="{% url 'announcement_detail' announcement.pk %}"
+                    class="size-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all group/btn">
+                    <span
+                        class="material-symbols-outlined group-hover/btn:translate-x-1 transition-all">chevron_right</span>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="p-20 text-center glass-card rounded-3xl border border-slate-200 dark:border-slate-800">
+            <span
+                class="material-symbols-outlined text-6xl text-slate-200 dark:text-slate-800 mb-4">notifications_off</span>
+            <p class="text-slate-500 font-bold">No announcements found in the feed.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

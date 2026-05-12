@@ -1,0 +1,67 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}My Evaluations - EduPulse{% endblock %}
+
+{% block header_title %}Academic Growth Tracking{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-black tracking-tight tracking-tighter italic">Evaluation History</h1>
+            <p class="text-slate-500 font-medium">Track your AI-powered subject mastery over time</p>
+        </div>
+        <a href="{% url 'initiate_evaluation' %}"
+            class="px-8 py-4 bg-primary text-white rounded-2xl font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all flex items-center gap-2">
+            <span class="material-symbols-outlined font-black">add_task</span> New Test
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for eval in evaluations %}
+        <div
+            class="glass-card rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden group hover:border-primary/50 transition-all">
+            <div
+                class="p-6 bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex justify-between items-start">
+                <div>
+                    <h3 class="font-black text-lg text-slate-800 dark:text-slate-100">{{ eval.subject.name }}</h3>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ eval.subject.code }} • Sem
+                        {{ eval.semester }}</p>
+                </div>
+                <div
+                    class="size-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-center font-black text-primary">
+                    {{ eval.score|floatformat:0 }}%
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                    <span class="material-symbols-outlined text-sm">calendar_month</span>
+                    {{ eval.created_at|date:"j F, Y" }}
+                </div>
+                <p class="text-xs text-slate-500 line-clamp-2 italic leading-relaxed">
+                    "{{ eval.ai_feedback }}"
+                </p>
+                <a href="{% url 'evaluation_detail' eval.id %}"
+                    class="w-full py-3 border border-slate-200 dark:border-slate-800 rounded-xl font-black text-sm text-center flex items-center justify-center gap-2 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">
+                    View Full Analysis
+                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full py-20 text-center">
+            <div class="flex flex-col items-center gap-4 text-slate-400">
+                <span class="material-symbols-outlined text-8xl opacity-10">smart_toy</span>
+                <h3 class="text-2xl font-black">No Evaluations Yet</h3>
+                <p class="max-w-md mx-auto">Start your first AI-powered subject evaluation to see deep insights into
+                    your learning progress.</p>
+                <a href="{% url 'initiate_evaluation' %}"
+                    class="mt-4 px-8 py-4 bg-primary text-white rounded-2xl font-black">
+                    Start Evaluation
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

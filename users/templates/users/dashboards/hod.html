@@ -1,0 +1,328 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}HOD Dashboard - EduPulse{% endblock %}
+
+{% block header_title %}Department Operations{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Department Hero -->
+    <div class="relative overflow-hidden rounded-3xl bg-primary px-8 py-10 text-white shadow-2xl">
+        <div class="absolute right-0 top-0 -mr-20 -mt-20 size-64 rounded-full bg-white/10 blur-3xl"></div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="max-w-xl">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold mb-4">
+                    <span class="material-symbols-outlined text-sm">corporate_fare</span>
+                    Department Head
+                </div>
+                <h1 class="text-3xl md:text-4xl font-black mb-3">
+                    {% if department %}{{ department.name }}{% else %}Department Management{% endif %}
+                </h1>
+                <p class="text-primary-100/80 text-lg leading-relaxed mb-6">
+                    Oversee your departmental faculty, manage specialized curriculum announcements, and track student
+                    performance.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'announcement_create' %}"
+                        class="px-5 py-2.5 bg-white text-primary rounded-xl font-black text-sm shadow-xl flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">campaign</span> Department Notice
+                    </a>
+                    <a href="{% url 'advisor_list' %}"
+                        class="px-5 py-2.5 bg-primary-dark/20 backdrop-blur-md border border-white/20 text-white rounded-xl font-black text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">engineering</span> Faculty Mapping
+                    </a>
+                    <button
+                        class="px-5 py-2.5 bg-primary-dark/20 backdrop-blur-md border border-white/20 text-white rounded-xl font-black text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">monitoring</span> Workload Stats
+                    </button>
+                </div>
+            </div>
+            <div class="hidden md:block">
+                <span class="material-symbols-outlined text-8xl opacity-40">badge</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">co_present</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Faculty Count</p>
+                    <h3 class="text-3xl font-black">{{ faculty_count|default:0 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">pending_actions</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Pending Approvals</p>
+                    <h3 class="text-3xl font-black">
+                        {{ pending_faculty_approvals|add:pending_student_approvals|default:0 }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">school</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Students</p>
+                    <h3 class="text-3xl font-black">{{ student_count|default:0 }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Managed Lists -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Faculty List -->
+        <div class="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+                <h3 class="text-xl font-black tracking-tight">Registered Faculty</h3>
+                <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full">{{ faculties|length }}
+                    Members</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-xs uppercase tracking-widest text-slate-500 bg-slate-50 dark:bg-slate-800/30">
+                            <th class="px-6 py-4 font-bold border-b border-slate-100 dark:border-slate-800">Faculty</th>
+                            <th class="px-6 py-4 font-bold border-b border-slate-100 dark:border-slate-800">ID</th>
+                            <th class="px-6 py-4 font-bold border-b border-slate-100 dark:border-slate-800">Status</th>
+                            <th class="px-6 py-4 font-bold border-b border-slate-100 dark:border-slate-800">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                        {% for faculty in faculties %}
+                        <tr class="group hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-all">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                                        {{ faculty.first_name|first }}{{ faculty.last_name|first }}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-sm">{{ faculty.get_full_name }}</p>
+                                        <p class="text-xs text-slate-500">{{ faculty.email }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-400">
+                                {{ faculty.employee_id|default:"N/A" }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if faculty.is_approved %}
+                                <span
+                                    class="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase rounded-md">Approved</span>
+                                {% else %}
+                                <span
+                                    class="px-2 py-1 bg-amber-500/10 text-amber-500 text-[10px] font-black uppercase rounded-md animate-pulse">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex gap-2">
+                                    <button
+                                        class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">visibility</span>
+                                    </button>
+                                    {% if not faculty.is_approved %}
+                                    <a href="{% url 'user_approval' %}"
+                                        class="p-2 hover:bg-emerald-500/10 hover:text-emerald-500 rounded-lg transition-colors"
+                                        title="Review Details">
+                                        <span class="material-symbols-outlined text-lg">how_to_reg</span>
+                                    </a>
+                                    <form method="post" action="{% url 'approve_user' faculty.pk %}" class="inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="approve">
+                                        <button type="submit"
+                                            class="p-2 hover:bg-emerald-500/20 text-emerald-600 rounded-lg transition-colors"
+                                            title="Quick Approve">
+                                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-10 text-center text-slate-500 italic">No registered faculty
+                                found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Student List -->
+        <div class="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+                <h3 class="text-xl font-black tracking-tight">Department Students</h3>
+                <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-xs font-bold rounded-full">{{
+                    students|length }} Enrolled</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-xs uppercase tracking-widest text-slate-500 bg-slate-50 dark:bg-slate-800/30">
+                            <th class="px-6 py-4 font-bold border-b border-slate-100 dark:border-slate-800">Student</th>
+                            <th class="px-6 py-4 font-bold border-b border-slate-100 dark:border-slate-800">Batch</th>
+                            <th class="px-6 py-4 font-bold border-b border-slate-100 dark:border-slate-800">Status</th>
+                            <th class="px-6 py-4 font-bold border-b border-slate-100 dark:border-slate-800">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                        {% for student in students %}
+                        <tr class="group hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-all">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="size-10 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold">
+                                        {{ student.first_name|first }}{{ student.last_name|first }}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-sm">{{ student.get_full_name }}</p>
+                                        <p class="text-xs text-slate-500">{{ student.username }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-400">
+                                {{ student.enrollments.first.batch|default:"N/A" }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if student.is_approved %}
+                                <span
+                                    class="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase rounded-md">Approved</span>
+                                {% else %}
+                                <span
+                                    class="px-2 py-1 bg-amber-500/10 text-amber-500 text-[10px] font-black uppercase rounded-md animate-pulse">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex gap-2">
+                                    {% if student.student_profile %}
+                                    <a href="{% url 'student_profile_detail' student.student_profile.pk %}"
+                                        class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">visibility</span>
+                                    </a>
+                                    {% else %}
+                                    <button disabled class="p-2 text-slate-300 cursor-not-allowed">
+                                        <span class="material-symbols-outlined text-lg">visibility</span>
+                                    </button>
+                                    {% endif %}
+                                    {% if not student.is_approved %}
+                                    <a href="{% url 'user_approval' %}"
+                                        class="p-2 hover:bg-emerald-500/10 hover:text-emerald-500 rounded-lg transition-colors"
+                                        title="Review Details">
+                                        <span class="material-symbols-outlined text-lg">how_to_reg</span>
+                                    </a>
+                                    <form method="post" action="{% url 'approve_user' student.pk %}" class="inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="approve">
+                                        <button type="submit"
+                                            class="p-2 hover:bg-emerald-500/20 text-emerald-600 rounded-lg transition-colors"
+                                            title="Quick Approve">
+                                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-10 text-center text-slate-500 italic">No registered students
+                                found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Activity Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Faculty Activity Tracking -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-black tracking-tight">Faculty Activity Monitoring</h3>
+                <a href="{% url 'faculty_list' %}" class="text-sm font-bold text-primary hover:underline">Manage
+                    Team</a>
+            </div>
+            <div class="space-y-4">
+                <div
+                    class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all flex gap-4 items-center">
+                    <div class="size-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <span class="material-symbols-outlined">analytics</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold">Attendance Completion</h4>
+                        <p class="text-sm text-slate-500">Track which faculty members have completed attendance today.
+                        </p>
+                    </div>
+                    <button
+                        class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-bold">Details</button>
+                </div>
+                <div
+                    class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all flex gap-4 items-center">
+                    <div class="size-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <span class="material-symbols-outlined">description</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold">Lesson Plan Compliance</h4>
+                        <p class="text-sm text-slate-500">Monitor content coverage against syllabus schedules.</p>
+                    </div>
+                    <button
+                        class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-bold">Details</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Department Announcements -->
+        <div
+            class="space-y-6 p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">
+            <h3 class="text-xl font-black mb-4">Dept Announcements</h3>
+            <p class="text-sm text-slate-500 mb-6">Create notices specific to your department or subjects.</p>
+            <div class="space-y-3">
+                {% for announcement in recent_announcements %}
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 transition-all cursor-pointer"
+                    onclick="window.location.href='{% url 'announcement_detail' announcement.pk %}';">
+                    <div class="flex justify-between items-start mb-1">
+                        <h4
+                            class="text-[10px] font-black {% if announcement.priority == 'HIGH' or announcement.priority == 'URGENT' %}text-rose-500{% else %}text-primary{% endif %} uppercase tracking-tighter">
+                            {{ announcement.get_priority_display }}
+                        </h4>
+                        <span class="text-[8px] font-bold text-slate-400">{{ announcement.posted_at|date:"d M" }}</span>
+                    </div>
+                    <p class="text-sm font-black line-clamp-1">{{ announcement.title }}</p>
+                    <p class="text-[10px] text-slate-500 line-clamp-2 mt-1">{{ announcement.content|striptags }}</p>
+                </div>
+                {% empty %}
+                <div class="p-8 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-2xl">
+                    <span class="material-symbols-outlined text-3xl text-slate-200 mb-2">campaign</span>
+                    <p class="text-xs text-slate-400 font-bold">No announcements posted yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+            <a href="{% url 'announcement_create' %}"
+                class="mt-6 block w-full py-4 bg-primary text-white rounded-2xl font-black text-xs text-center uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                New Announcement
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

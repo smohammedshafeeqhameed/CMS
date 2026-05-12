@@ -1,0 +1,127 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}{{ assignment.title }} - EduPulse Pro{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-5xl mx-auto py-10">
+    <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
+        <!-- Header -->
+        <div class="p-10 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h1 class="text-4xl font-black italic tracking-tighter text-slate-900 dark:text-white">{{ assignment.title }}</h1>
+                    <div class="flex items-center gap-4 mt-3">
+                        <span class="text-xs font-black uppercase tracking-widest text-primary">{{ assignment.subject.code }}</span>
+                        <div class="size-1 rounded-full bg-slate-300"></div>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">{{ assignment.due_date|date:"F d, Y @ H:i" }}</span>
+                    </div>
+                </div>
+                {% if user.is_faculty %}
+                <a href="{% url 'submission_list' assignment.pk %}" class="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary transition-all">
+                    Review Submissions
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-100 dark:divide-slate-800">
+            <!-- Content -->
+            <div class="lg:col-span-2 p-10 space-y-8">
+                <div>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Requirements Specification</h3>
+                    <div class="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                        {{ assignment.description|linebreaks }}
+                    </div>
+                </div>
+
+                {% if assignment.attachment %}
+                <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="size-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                            <span class="material-symbols-outlined">attachment</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400">Reference Material</p>
+                            <p class="font-bold text-slate-800 dark:text-white">{{ assignment.attachment.name|truncatechars:30 }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ assignment.attachment.url }}" target="_blank" class="px-6 py-3 bg-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all">
+                        Download
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar / Submission -->
+            <div class="p-10 bg-slate-50/30 dark:bg-slate-800/10 space-y-8">
+                <div>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Execution Metrics</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500">Maximum Marks</span>
+                            <span class="text-lg font-black italic text-primary">{{ assignment.max_marks }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500">Status</span>
+                            {% if assignment.is_overdue %}
+                            <span class="px-3 py-1 bg-rose-500/10 text-rose-500 text-[10px] font-black uppercase rounded-lg">Expired</span>
+                            {% else %}
+                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase rounded-lg">Active</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if user.is_student %}
+                <div class="pt-8 border-t border-slate-100 dark:border-slate-800">
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Synchronization Status</h3>
+                    
+                    {% if submission %}
+                        <div class="p-6 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 text-center">
+                            <span class="material-symbols-outlined text-emerald-500 text-4xl mb-4">check_circle</span>
+                            <p class="text-sm font-black italic text-emerald-600">Artifact Synchronized</p>
+                            <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mt-1">{{ submission.submitted_at|date:"M d, Y" }}</p>
+                            
+                            {% if submission.marks_obtained is not None %}
+                            <div class="mt-6 pt-6 border-t border-emerald-500/10">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-emerald-500">Result Matrix</p>
+                                <p class="text-3xl font-black italic text-emerald-600 mt-1">{{ submission.marks_obtained }}<span class="text-sm opacity-50">/{{ assignment.max_marks }}</span></p>
+                                {% if submission.feedback %}
+                                <div class="mt-4 p-4 bg-white/50 dark:bg-black/20 rounded-2xl text-left text-xs font-medium italic text-slate-600 dark:text-slate-400">
+                                    "{{ submission.feedback }}"
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% else %}
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6 italic">Awaiting instructor validation</p>
+                            {% endif %}
+                        </div>
+                    {% elif not assignment.is_overdue %}
+                        <form method="post" action="{% url 'assignment_submit' assignment.pk %}" enctype="multipart/form-data" class="space-y-6">
+                            {% csrf_token %}
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Upload Submission</label>
+                                {{ submission_form.submission_file }}
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Remarks</label>
+                                {{ submission_form.remarks }}
+                            </div>
+                            <button type="submit" class="w-full py-4 bg-primary text-white rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-primary/30 hover:scale-[1.02] transition-all">
+                                Synchronize File
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="p-6 rounded-3xl bg-rose-500/10 border border-rose-500/20 text-center">
+                            <span class="material-symbols-outlined text-rose-500 text-4xl mb-4">timer_off</span>
+                            <p class="text-sm font-black italic text-rose-600">Synchronization Link Lost</p>
+                            <p class="text-[10px] font-bold text-rose-500 uppercase tracking-widest mt-1">Deadline Expired</p>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

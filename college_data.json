@@ -1,0 +1,509 @@
+{
+    "Sheet1": [
+        {
+            " QN NO": 1.0,
+            "QUESTIONS": "What is the name of the college?",
+            "ANSWER": "HOLY GRACE GROUP OF INSTITUTIONS"
+        },
+        {
+            " QN NO": 2.0,
+            "QUESTIONS": " Who is the principal?",
+            "ANSWER": "Dr. K Prasanth"
+        },
+        {
+            " QN NO": 3.0,
+            "QUESTIONS": "Who is the vice principal?",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 4.0,
+            "QUESTIONS": "When was the college established?",
+            "ANSWER": 1999
+        },
+        {
+            " QN NO": 5.0,
+            "QUESTIONS": "Where is the college located?",
+            "ANSWER": "MALA, THRISSUR"
+        },
+        {
+            " QN NO": 6.0,
+            "QUESTIONS": "Is it a government or private college?",
+            "ANSWER": "PRIVATE COLLEGE"
+        },
+        {
+            " QN NO": 7.0,
+            "QUESTIONS": "How many courses are offered?",
+            "ANSWER": 10
+        },
+        {
+            " QN NO": 8.0,
+            "QUESTIONS": "What courses are available?\n\n\n\n\n\n\n\n\n",
+            "ANSWER": "B.TECH COMPUTER SCIENCE &\nENGINEERING\nB.TECH COMPUTER SCIENCE\n& ENGINEERING (CYBER SECURITY)\nB.TECH COMPUTER SCIENCE\n& ENGINEERING (DATA SCIENCE)\nB.TECH CIVIL ENGINEERING\nB.TECH MECHANICAL ENGINEERING\nB.TECH CIVIL & ENVIRONMENTAL\nENGINEERING\nB.TECH ARTIFICIAL INTELLIGENCE\n& DATA SCIENCE\nB.TECH ELECTRONICS &\nCOMMUNICATION ENGINEERING\nB.TECH ELECTRICAL &\nELECTRONICS ENGINEERING\nAPPLIED SCIENCE\n& HUMANITIES"
+        },
+        {
+            " QN NO": 9.0,
+            "QUESTIONS": "How many departments are there?",
+            "ANSWER": 10
+        },
+        {
+            " QN NO": 10.0,
+            "QUESTIONS": "How many students study in the college?",
+            "ANSWER": 457
+        },
+        {
+            " QN NO": 11.0,
+            "QUESTIONS": " How many teachers work there?",
+            "ANSWER": 35
+        },
+        {
+            " QN NO": 12.0,
+            "QUESTIONS": "What is the college timing?\n\n",
+            "ANSWER": "9:00 AM to 4:10 PM"
+        },
+        {
+            " QN NO": 13.0,
+            "QUESTIONS": "Does the college have a library?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 14.0,
+            "QUESTIONS": "Does it have a computer lab?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 15.0,
+            "QUESTIONS": "Is there a science laboratory?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 16.0,
+            "QUESTIONS": "Does the college have a playground?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 17.0,
+            "QUESTIONS": "Is there a canteen?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 18.0,
+            "QUESTIONS": "Does the college provide hostel facilities?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 19.0,
+            "QUESTIONS": "Is there a bus facility?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 20.0,
+            "QUESTIONS": "Does the college have a website?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 21.0,
+            "QUESTIONS": "Is the college affiliated with any university?",
+            "ANSWER": "YES, KTU"
+        },
+        {
+            " QN NO": 22.0,
+            "QUESTIONS": "Does it offer undergraduate courses?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 23.0,
+            "QUESTIONS": "Does it offer postgraduate courses?",
+            "ANSWER": "YES, MBA"
+        },
+        {
+            " QN NO": 24.0,
+            "QUESTIONS": "Are there diploma courses available?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 25.0,
+            "QUESTIONS": " How long are the courses?",
+            "ANSWER": "MAXIMUM 4 YEARS AND MINIMUM 2 YEARS"
+        },
+        {
+            " QN NO": 26.0,
+            "QUESTIONS": "What is the admission process?",
+            "ANSWER": "Apply through the KEAM entrance exam.\nParticipate in KEAM counselling and choose the college.\nSeat allotment is based on KEAM rank and availability.\nSubmit documents and pay the admission fee to confirm the seat."
+        },
+        {
+            " QN NO": 27.0,
+            "QUESTIONS": "Eligibility for admission?",
+            "ANSWER": "Apply through the KEAM entrance exam.\nParticipate in KEAM counselling and choose the college.\nSeat allotment is based on KEAM rank and availability.\nSubmit documents and pay the admission fee to confirm the seat."
+        },
+        {
+            " QN NO": 28.0,
+            "QUESTIONS": "What is the fee structure?\n\n\n\n\n\n\n",
+            "ANSWER": "Approximate yearly fee:\n • Government quota: around ₹50,000 – ₹65,000 per year\n • Management quota: around ₹75,000 – ₹1,00,000 per year\n • Extra charges may include hostel, exam fees, and transportation."
+        },
+        {
+            " QN NO": 29.0,
+            "QUESTIONS": "Are scholarships available?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 30.0,
+            "QUESTIONS": "Does the college conduct exams every semester?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 31.0,
+            "QUESTIONS": "Are there extracurricular activities?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 32.0,
+            "QUESTIONS": "Does the college have sports teams?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 33.0,
+            "QUESTIONS": "Are there cultural programs?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 34.0,
+            "QUESTIONS": "Does the college celebrate Arts day?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 35.0,
+            "QUESTIONS": "Is there a student union?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 36.0,
+            "QUESTIONS": "Does the college provide internships?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 37.0,
+            "QUESTIONS": "Are there placement opportunities?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 38.0,
+            "QUESTIONS": "What is the passing percentage?",
+            "ANSWER": 0.8
+        },
+        {
+            " QN NO": 36.0,
+            "QUESTIONS": "What facilities are available for students?\n\n\n\n\n\n\n\n",
+            "ANSWER": "Modern classrooms and smart learning facilities\nWell-equipped laboratories for practical learning\nCentral library with books, journals, and digital resources\nComputer labs with high-speed internet and Wi-Fi\nHostel facilities for boys and girls\nCollege bus transportation for students and staff\nSports and games facilities (indoor and outdoor)\nCanteen / cafeteria for food and refreshments\nPlacement and training cell for career opportunities\nSeminar halls and auditorium for programs and events\nStudent clubs and activities such as NSS and technical clubs\nMedical and security facilities on campu"
+        },
+        {
+            " QN NO": 40.0,
+            "QUESTIONS": "Is there a dress code?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 41.0,
+            "QUESTIONS": "What is the email ID of the college?",
+            "ANSWER": "holygraceengg@gmail.com"
+        },
+        {
+            " QN NO": 42.0,
+            "QUESTIONS": " Are classrooms well equipped?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 43.0,
+            "QUESTIONS": "Does the college have CCTV security?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 44.0,
+            "QUESTIONS": "Is Wi-Fi available on campus?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 45.0,
+            "QUESTIONS": "Are there separate washrooms for boys and girls?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 46.0,
+            "QUESTIONS": "What is the contact number of the college?",
+            "ANSWER": 8086097900
+        },
+        {
+            " QN NO": 47.0,
+            "QUESTIONS": "Are parents allowed to visit the campus?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 48.0,
+            "QUESTIONS": "Does the college organize educational tours?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 49.0,
+            "QUESTIONS": "What are the college rules?\n\n\n\n\n",
+            "ANSWER": "• Attendance: Minimum 75% attendance is required to attend exams, and students must be punctual for all classes and activities.\n • ID Card & Dress Code: Students must wear their ID card on campus and follow the college dress code.\n • Discipline & Cleanliness: Maintain discipline in classrooms and help keep the campus clean.\n • Mobile Phones: Not allowed during classes, labs, or in the library unless permitted.\n • Anti-Ragging: Ragging is strictly prohibited and punishable by law.\n • Grievances: Problems should be reported to the Class Tutor, HOD, or Grievance Cell.\n • Rules: Students must follow all rules; violations may lead to disciplinary action."
+        },
+        {
+            " QN NO": 50.0,
+            "QUESTIONS": "Why should students choose this college?\n\n\n\n\n\n\n\n",
+            "ANSWER": "Holy Grace Academy of Engineering strives to develop our students to become innovators and thought leaders by imparting a rigorous training programme that utilizes academic, co-curricular, personality development, and the latest pedagogical and technological skills.Students should choose Holy Grace Academy of Engineering because it provides quality education, experienced faculty, and modern facilities. The college offers well-equipped labs, a good library, placement support, and opportunities for sports and extracurricular activities. It helps students develop both technical skills and career opportunities for the future.\n"
+        },
+        {
+            " QN NO": 51.0,
+            "QUESTIONS": "Under which trust does the college function?",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 52.0,
+            "QUESTIONS": "To which university is the college affiliated?",
+            "ANSWER": "APJ Abdul Kalam Technological University"
+        },
+        {
+            " QN NO": 53.0,
+            "QUESTIONS": "Who was the Founder President and Manager of the college?",
+            "ANSWER": null
+        },
+        {
+            " QN NO": 54.0,
+            "QUESTIONS": "Who is the Chairman of the South Zone?",
+            "ANSWER": "Mr. Sany Edattukaran"
+        },
+        {
+            " QN NO": 55.0,
+            "QUESTIONS": "Who is the Secretary of the South Zone?",
+            "ANSWER": "Mr.Benny John Ayinikkal"
+        },
+        {
+            " QN NO": 56.0,
+            "QUESTIONS": "Who is the Administrative Officer of the South Zone?",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 57.0,
+            "QUESTIONS": "What are the different teaching-learning methods followed in \nthe college?\n\n\n\n\n\n",
+            "ANSWER": "Lecture-based teaching using board work and presentations\nInteractive classes with discussions and Q&A\nLaboratory and practical sessions for hands-on learning\nProject-based learning through mini and major projects\nSeminars and student presentations\nGroup discussions and assignments\nICT-enabled teaching using smart classrooms and digital tools\nGuest lectures and industrial visits for industry exposure."
+        },
+        {
+            " QN NO": 58.0,
+            "QUESTIONS": "Does the college provide bridge courses?",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 59.0,
+            "QUESTIONS": "Are UGC-NET oriented classes conducted?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 60.0,
+            "QUESTIONS": "How is the campus environment described?",
+            "ANSWER": "The campus environment is green, clean, peaceful, and student-friendly, providing a safe and positive atmosphere for learning and overall development."
+        },
+        {
+            " QN NO": 61.0,
+            "QUESTIONS": "Does the college have seminar halls?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 62.0,
+            "QUESTIONS": "Does the college have National Service Scheme(NSS)?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 63.0,
+            "QUESTIONS": "What types of club activities are conducted?",
+            "ANSWER": "ARTS, SPORTS,DANCE,CRAFTS"
+        },
+        {
+            " QN NO": 64.0,
+            "QUESTIONS": "Are regular PTA meetings conducted?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 65.0,
+            "QUESTIONS": "Is there an Alumni Association?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 66.0,
+            "QUESTIONS": "What's the college pincode",
+            "ANSWER": 680732
+        },
+        {
+            " QN NO": 67.0,
+            "QUESTIONS": "Does the college have solar power? ",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 68.0,
+            "QUESTIONS": "How many periods are there in college in one day?",
+            "ANSWER": 6
+        },
+        {
+            " QN NO": 69.0,
+            "QUESTIONS": "Is CCTV available for examinations?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 70.0,
+            "QUESTIONS": "Does the college have a tourism club?",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 71.0,
+            "QUESTIONS": "Is there a hostel nearby the college?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 72.0,
+            "QUESTIONS": "Is there a hospital nearby the college?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 73.0,
+            "QUESTIONS": "How do I check my college exam result?",
+            "ANSWER": "Through university website"
+        },
+        {
+            " QN NO": 74.0,
+            "QUESTIONS": "Does the college issue ID cards? ",
+            "ANSWER": "yes"
+        },
+        {
+            " QN NO": 75.0,
+            "QUESTIONS": "Is the college private? ",
+            "ANSWER": "yes"
+        },
+        {
+            " QN NO": 76.0,
+            "QUESTIONS": "What's the minimum percentage of attendance required?",
+            "ANSWER": 0.75
+        },
+        {
+            " QN NO": 77.0,
+            "QUESTIONS": "How do I borrow books from the library?",
+            "ANSWER": "Search for the required book in the library catalogue.\nTake the book to the library counter.\nShow your college ID/library card.\nThe librarian will issue the book and record the return date.\nReturn or renew the book before the due date."
+        },
+        {
+            " QN NO": 78.0,
+            "QUESTIONS": "How many intervals are there in college per day?",
+            "ANSWER": 3
+        },
+        {
+            " QN NO": 79.0,
+            "QUESTIONS": "Is the college office open on weekends? ",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 80.0,
+            "QUESTIONS": "Does the college have classes on weekends?",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 81.0,
+            "QUESTIONS": "Are there online courses available? ",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 82.0,
+            "QUESTIONS": "Are there any entrance exams? ",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 83.0,
+            "QUESTIONS": "Are there online payment options? ",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 84.0,
+            "QUESTIONS": "What's the exam schedule?",
+            "ANSWER": "Internal Exams (Series Tests): Conducted twice in a semester by the college.\nEnd Semester Exam (University Exam): Conducted by KTU after the semester ends.\nLab Exams: Usually held before the theory exams.\nTimetable: The exact exam dates are published online about one month before the exam on the KTU websit"
+        },
+        {
+            " QN NO": 85.0,
+            "QUESTIONS": "Does the college have security? ",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 86.0,
+            "QUESTIONS": "Is unauthorized gathering allowed inside the campus?",
+            "ANSWER": "NO"
+        },
+        {
+            " QN NO": 87.0,
+            "QUESTIONS": "what will be the consequence of violating the norms? ",
+            "ANSWER": "FINES,SUSPENSION,DISMISS OR ANY OTHER DESCPLINARY ACTIONS"
+        },
+        {
+            " QN NO": 88.0,
+            "QUESTIONS": "What is the rule regarding damage to college property?",
+            "ANSWER": "FINES,SUSPENSION,DISMISS OR ANY OTHER DESCPLINARY ACTIONS"
+        },
+        {
+            " QN NO": 89.0,
+            "QUESTIONS": "What are the values and ethics for stakeholders?",
+            "ANSWER": "Integrity and honesty in all activities.\nTransparency and accountability in decisions.\nRespect and fairness to all stakeholders.\nCommitment to quality and excellence.\nSocial responsibility and ethical conduct.\nTrust and cooperation among stakeholders."
+        },
+        {
+            " QN NO": 90.0,
+            "QUESTIONS": "What is the procedure for adding CE marks?",
+            "ANSWER": "For CE (Continuous Evaluation) marks in APJ Abdul Kalam Technological University:\nTeachers conduct internal exams, assignments, and attendance evaluation.\nMarks are recorded by the subject teacher.\nThe college uploads CE marks to the KTU portal.\nStudents can verify the marks in the portal. After verification, the marks are finalized and submitted to the university.\n"
+        },
+        {
+            " QN NO": 91.0,
+            "QUESTIONS": "What is the pledge to the nation?\n\n\n\n",
+            "ANSWER": "India is my country. All Indians are my brothers and sisters.\nI love my country and I am proud of its rich and varied heritage.\nI shall always strive to be worthy of it.\nI shall give my parents, teachers and all elders respect and treat everyone with courtesy.\nTo my country and my people, I pledge my devotion.\nIn their well-being and prosperity alone lies my happiness."
+        },
+        {
+            " QN NO": 92.0,
+            "QUESTIONS": "What message does the national anthem give?",
+            "ANSWER": "The Jana Gana Mana gives a message of national unity, patriotism, and respect for the country. It highlights the diversity of India and the importance of unity among its people."
+        },
+        {
+            " QN NO": 93.0,
+            "QUESTIONS": "What is our motto?",
+            "ANSWER": "HOLY GRACE, MAKING A DIFFERENCE"
+        },
+        {
+            " QN NO": 94.0,
+            "QUESTIONS": "What are the important websites are? \n\n\n",
+            "ANSWER": "Official College Website:** [https://holygraceengineering.com/](https://holygraceengineering.com/) ([Holy Grace Academy of Engineering][1])\nKTU Website: [https://ktu.edu.in](https://ktu.edu.in) (for exam timetable, results, notifications)\nAICTE Website:  [https://www.aicte-india.org](https://www.aicte-india.org) (technical education authority)\nKEAM Admission Website: [https://cee.kerala.gov.in](https://cee.kerala.gov.in) (engineering admission details)"
+        },
+        {
+            " QN NO": 95.0,
+            "QUESTIONS": "Who are the rank holders in our college? \n\n\n",
+            "ANSWER": "NIL"
+        },
+        {
+            " QN NO": 96.0,
+            "QUESTIONS": "what is strongly banned  in the campus?",
+            "ANSWER": "In Holy Grace Academy of Engineering,ragging, smoking, alcohol, drugs, violence, and damage to college property are strictly banned on the campus.\n"
+        },
+        {
+            " QN NO": 97.0,
+            "QUESTIONS": "Are alcohol and illegal drugs allowed in the campus?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": 98.0,
+            "QUESTIONS": "Who is the Head/Faculty of the Department of Physical \nEducation?",
+            "ANSWER": "AKHIL V CHANDRAN"
+        },
+        {
+            " QN NO": 99.0,
+            "QUESTIONS": "Who are the non-teaching staff?\n\n\n\n\n\n\n",
+            "ANSWER": "office staff, lab assistants, librarians, technicians, and support staff"
+        },
+        {
+            " QN NO": 100.0,
+            "QUESTIONS": "Does the college have sports teams?",
+            "ANSWER": "YES"
+        },
+        {
+            " QN NO": NaN,
+            "QUESTIONS": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+            "ANSWER": null
+        }
+    ]
+}

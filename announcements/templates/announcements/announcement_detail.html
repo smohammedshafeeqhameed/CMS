@@ -1,0 +1,68 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}{{ announcement.title }} - EduPulse{% endblock %}
+
+{% block header_title %}Institutional Communication{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div
+        class="glass-card p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden relative">
+        <div class="absolute -right-20 -top-20 size-80 bg-primary/5 rounded-full blur-3xl"></div>
+
+        <div class="relative z-10 space-y-8">
+            <div class="space-y-4">
+                <div class="flex flex-wrap gap-2 text-xs font-black uppercase tracking-widest">
+                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full">{{ announcement.category.name|default:"General" }}</span>
+                    {% if announcement.priority != 'MEDIUM' %}
+                    <span class="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full">{{ announcement.get_priority_display }}</span>
+                    {% endif %}
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-full">{{ announcement.posted_at|date:"d M Y" }}</span>
+                </div>
+
+                <h1 class="text-3xl md:text-5xl font-black leading-tight">{{ announcement.title }}</h1>
+
+                <div class="flex items-center gap-4 text-sm font-bold text-slate-400">
+                    <span class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">person</span>
+                        Published by {{ announcement.posted_by.get_full_name|default:announcement.posted_by.username }}
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">groups_3</span>
+                        Target: {{ announcement.get_target_audience_display }}
+                    </span>
+                </div>
+            </div>
+
+            <div
+                class="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 text-lg leading-relaxed whitespace-pre-line">
+                {{ announcement.content }}
+            </div>
+
+            {% if announcement.attachment %}
+            <div class="pt-8 border-t border-slate-100 dark:border-slate-800">
+                <h3 class="text-xs font-black uppercase tracking-widest text-slate-500 mb-4">Attached Documents</h3>
+                <a href="{{ announcement.attachment.url }}"
+                    class="inline-flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800 hover:bg-primary/10 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all group">
+                    <div
+                        class="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+                        <span class="material-symbols-outlined">description</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">Download Attachment</p>
+                        <p class="text-[10px] text-slate-500 font-medium">Click to view/download the file</p>
+                    </div>
+                </a>
+            </div>
+            {% endif %}
+
+            <div class="pt-8 flex justify-between items-center">
+                <a href="{% url 'announcement_list' %}"
+                    class="flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-primary transition-all">
+                    <span class="material-symbols-outlined">arrow_back</span> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Study Materials - EduPulse{% endblock %}
+{% block header_title %}Study Materials{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:row items-center justify-between gap-6">
+        <div>
+            <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white mb-2">Academic Repository</h2>
+            <p class="text-slate-500 font-medium">Access and manage shared study materials for your classes.</p>
+        </div>
+        {% if user.is_faculty %}
+        <a href="{% url 'material_create' %}" class="px-8 py-4 bg-primary text-white rounded-3xl font-black text-xs uppercase tracking-widest hover:scale-[1.05] transition-all flex items-center gap-3 shadow-xl shadow-primary/25">
+            <span class="material-symbols-outlined">add_circle</span>
+            Upload New Material
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="glass-card p-6 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-sm">
+        <form method="GET" class="flex flex-wrap gap-4 items-center">
+            <div class="relative flex-grow max-w-md">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                <input type="text" name="search" placeholder="Filter by title..." value="{{ request.GET.search }}" 
+                    class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-900/50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary transition-all">
+            </div>
+            
+            <select name="department" onchange="this.form.submit()" class="bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-3 px-6 text-[10px] font-black uppercase tracking-widest cursor-pointer">
+                <option value="">All Departments</option>
+                {% for dept in departments %}
+                <option value="{{ dept.id }}" {% if request.GET.department == dept.id|stringformat:"i" %}selected{% endif %}>{{ dept.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="p-3 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-2xl hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm text-[20px]">tune</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Materials Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for material in materials %}
+        <div class="glass-card group rounded-[2.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-primary/50 transition-all flex flex-col shadow-sm">
+            <div class="p-8 pb-4">
+                <div class="flex items-start justify-between mb-6">
+                    <div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500">
+                        <span class="material-symbols-outlined text-3xl">
+                            {% with ext=material.file.name|lower %}
+                                {% if '.pdf' in ext %}pdf
+                                {% elif '.doc' in ext %}description
+                                {% elif '.ppt' in ext %}present_to_all
+                                {% else %}draft{% endif %}
+                            {% endwith %}
+                        </span>
+                    </div>
+                    {% if user == material.faculty or user.is_super_admin %}
+                    <a href="{% url 'material_delete' material.pk %}" class="opacity-0 group-hover:opacity-100 p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all">
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-black tracking-tight text-slate-900 dark:text-white mb-2 line-clamp-2 leading-tight">{{ material.title }}</h3>
+                    <p class="text-xs text-slate-500 font-medium line-clamp-2 italic">{{ material.description|default:"No additional notes." }}</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-[9px] font-black uppercase tracking-widest text-slate-500">
+                             {{ material.course.code }} Sem {{ material.semester }}
+                        </div>
+                        {% if material.subject %}
+                        <div class="px-3 py-1 bg-violet-100 dark:bg-violet-900/30 rounded-lg text-[9px] font-black uppercase tracking-widest text-violet-600 dark:text-violet-400">
+                            {{ material.subject.code }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex items-center gap-3 py-4 border-t border-slate-100 dark:border-slate-800">
+                        <div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-black text-slate-500 overflow-hidden">
+                            {% if material.faculty.profile_photo %}
+                            <img src="{{ material.faculty.profile_photo.url }}" class="w-full h-full object-cover">
+                            {% else %}
+                            {{ material.faculty.first_name|first }}{{ material.faculty.last_name|first }}
+                            {% endif %}
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-black uppercase text-slate-400 leading-none mb-1">Uploaded by</span>
+                            <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300 leading-none">Prof. {{ material.faculty.get_full_name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto p-4 pt-0">
+                <a href="{{ material.file.url }}" download class="w-full py-4 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all flex items-center justify-center gap-2 group/btn">
+                    <span class="material-symbols-outlined text-[18px] group-hover/btn:animate-bounce">download</span>
+                    Download Resource
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full py-20 text-center glass-card rounded-[3rem]">
+            <span class="material-symbols-outlined text-7xl text-slate-200 dark:text-slate-800 mb-6">folder_off</span>
+            <h4 class="text-xl font-black text-slate-400">No materials found</h4>
+            <p class="text-slate-500 font-medium">Try checking back later or adjust your filters.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="flex justify-center gap-3 pt-12">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+            class="size-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-slate-50 transition-all shadow-sm">
+            <span class="material-symbols-outlined">chevron_left</span>
+        </a>
+        {% endif %}
+        
+        <div class="px-6 h-12 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20">
+            {{ page_obj.number }}
+        </div>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+            class="size-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-slate-50 transition-all shadow-sm">
+            <span class="material-symbols-outlined">chevron_right</span>
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

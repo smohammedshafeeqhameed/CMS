@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Delete Job - SkillBridge{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in" style="display: flex; justify-content: center; align-items: center; min-height: 50vh;">
+    <div class="card glass-card" style="width: 100%; max-width: 500px; text-align: center;">
+        <h2 style="margin-bottom: 1rem; color: var(--danger);">Delete Job Posting?</h2>
+        <p style="margin-bottom: 2rem;">Are you sure you want to delete <strong>"{{ object.title }}"</strong> at {{
+            object.company }}? This action cannot be undone and will remove all associated applications.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div style="display: flex; justify-content: center; gap: 1rem;">
+                <button type="submit" class="btn btn-primary"
+                    style="background: var(--danger); border-color: var(--danger);">Yes, Delete</button>
+                <a href="{% url 'manage_jobs' %}" class="btn btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

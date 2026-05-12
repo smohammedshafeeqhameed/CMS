@@ -1,0 +1,123 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}AI Evaluation Results - EduPulse{% endblock %}
+
+{% block header_title %}Assessment Analytics{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-5xl mx-auto space-y-8 pb-12">
+    <!-- Result Header Card -->
+    <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3">
+            <div class="p-10 bg-primary flex flex-col items-center justify-center text-white text-center">
+                <p class="text-sm font-black uppercase tracking-widest opacity-70 mb-2">Final Score</p>
+                <div
+                    class="size-40 rounded-full border-8 border-white/20 flex items-center justify-center relative mb-4">
+                    <span class="text-5xl font-black">{{ evaluation.score|floatformat:0 }}%</span>
+                </div>
+                <p class="text-lg font-bold">{{ evaluation.correct_answers }} / {{ evaluation.total_questions }} Correct
+                </p>
+            </div>
+            <div class="md:col-span-2 p-10 flex flex-col justify-center space-y-4">
+                <div class="flex items-center gap-3 text-primary">
+                    <span class="material-symbols-outlined text-3xl">terminal</span>
+                    <h2 class="text-2xl font-black">{{ evaluation.subject.name }} Assessment</h2>
+                </div>
+                <div
+                    class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                    <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">AI Performance Summary
+                    </p>
+                    <p class="text-lg font-medium text-slate-700 dark:text-slate-200 leading-relaxed italic">
+                        "{{ evaluation.ai_feedback }}"
+                    </p>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <a href="{% url 'initiate_evaluation' %}"
+                        class="px-6 py-3 bg-slate-900 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all">
+                        <span class="material-symbols-outlined text-lg">restart_alt</span> Retake Different Test
+                    </a>
+                    <a href="{% url 'student_profile' %}"
+                        class="px-6 py-3 border border-slate-200 dark:border-slate-800 rounded-xl font-bold hover:bg-slate-50 transition-all">
+                        Back to Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- AI Recommendations -->
+        <div
+            class="lg:col-span-1 glass-card p-8 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+            <h3 class="text-xl font-black flex items-center gap-3">
+                <span class="material-symbols-outlined text-amber-500">lightbulb</span>
+                AI Recommendations
+            </h3>
+            <div class="space-y-4">
+                {% for line in evaluation.ai_recommendations.splitlines %}
+                <div
+                    class="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 text-sm font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {{ line }}
+                </div>
+                {% empty %}
+                <p class="text-sm text-slate-500 italic">No recommendations generated.</p>
+                {% endfor %}
+            </div>
+
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-4">
+                    <span class="material-symbols-outlined text-sm">share</span> Access Permissions
+                </div>
+                <p class="text-[10px] text-slate-400 font-medium italic">
+                    This result has been shared with your Department HOD and Assigned Faculty Mentor for academic
+                    tracking.
+                </p>
+            </div>
+        </div>
+
+        <!-- Detailed Review -->
+        <div class="lg:col-span-2 space-y-6">
+            <h3 class="text-xl font-black px-4">Subject Mastery Details</h3>
+            <div class="space-y-4">
+                {% for response in details %}
+                <div
+                    class="glass-card p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex justify-between items-start gap-4">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-100 leading-relaxed">{{ response.question }}
+                        </h4>
+                        {% if response.is_correct %}
+                        <span
+                            class="flex-shrink-0 size-8 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-sm">check</span>
+                        </span>
+                        {% else %}
+                        <span
+                            class="flex-shrink-0 size-8 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-sm">close</span>
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div
+                            class="p-4 rounded-xl {% if response.is_correct %}bg-emerald-500/5 text-emerald-600{% else %}bg-rose-500/5 text-rose-600{% endif %} text-xs font-bold">
+                            Your Answer: {{ response.user_answer }}
+                        </div>
+                        {% if not response.is_correct %}
+                        <div class="p-4 rounded-xl bg-emerald-500/5 text-emerald-600 text-xs font-bold">
+                            Correct Answer: {{ response.correct_answer }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-[11px] text-slate-500 font-medium">
+                        <span class="font-black text-primary uppercase mr-2 tracking-tighter">AI Explanation:</span>
+                        {{ response.explanation }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

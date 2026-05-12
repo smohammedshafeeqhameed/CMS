@@ -1,0 +1,157 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Super Admin Dashboard - EduPulse{% endblock %}
+
+{% block header_title %}System Governance Dashboard{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <!-- Quick Actions Hero -->
+    <div class="relative overflow-hidden rounded-3xl bg-slate-900 px-8 py-10 text-white shadow-2xl">
+        <div class="absolute right-0 top-0 -mr-20 -mt-20 size-64 rounded-full bg-primary/20 blur-3xl"></div>
+        <div class="relative z-10">
+            <h1 class="text-3xl font-black mb-3">System Control Center</h1>
+            <p class="text-slate-400 text-lg max-w-2xl mb-8">
+                Manage institutional infrastructure, govern user roles, and monitor cross-departmental operations from
+                one central authority.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="{% url 'admin_create' %}"
+                    class="px-6 py-3 bg-primary rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-all">
+                    <span class="material-symbols-outlined">person_add</span> Add Admin
+                </a>
+                <a href="{% url 'hod_create' %}"
+                    class="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl font-bold flex items-center gap-2 hover:bg-white/20 transition-all text-white">
+                    <span class="material-symbols-outlined">badge</span> Add HOD
+                </a>
+                <a href="{% url 'super_admin_department_create' %}"
+                    class="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl font-bold flex items-center gap-2 hover:bg-white/20 transition-all text-white">
+                    <span class="material-symbols-outlined">corporate_fare</span> New Department
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">groups</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Total Users</p>
+                    <h3 class="text-3xl font-black">{{ total_users }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">pending_actions</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Approvals</p>
+                    <h3 class="text-3xl font-black">{{ pending_approvals_count|default:0 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">account_balance</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Dept.s</p>
+                    <h3 class="text-3xl font-black">{{ total_departments }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">campaign</span>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Active Jobs</p>
+                    <h3 class="text-3xl font-black">{{ active_jobs }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Management Quick Links -->
+        <div class="space-y-6">
+            <h3 class="text-xl font-black tracking-tight flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">admin_panel_settings</span> Management Portals
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="{% url 'admin_list' %}"
+                    class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all flex flex-col items-center text-center gap-4">
+                    <div class="size-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-3xl">shield_person</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Admin Management</h4>
+                        <p class="text-xs text-slate-500">View and manage system administrators</p>
+                    </div>
+                </a>
+                <a href="{% url 'hod_list' %}"
+                    class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all flex flex-col items-center text-center gap-4">
+                    <div class="size-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-3xl">badge</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">HOD Directory</h4>
+                        <p class="text-xs text-slate-500">Manage department heads</p>
+                    </div>
+                </a>
+                <a href="{% url 'faculty_list' %}"
+                    class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all flex flex-col items-center text-center gap-4">
+                    <div class="size-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-3xl">school</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Faculty Staff</h4>
+                        <p class="text-xs text-slate-500">System-wide faculty management</p>
+                    </div>
+                </a>
+                <a href="{% url 'super_admin_department_list' %}"
+                    class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all flex flex-col items-center text-center gap-4">
+                    <div class="size-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-3xl">corporate_fare</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Department Matrix</h4>
+                        <p class="text-xs text-slate-500">Configure institutional structure</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Pending Approvals Sneak Peek -->
+        <div class="space-y-6">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-black tracking-tight flex items-center gap-2">
+                    <span class="material-symbols-outlined text-amber-500">person_check</span> Pending Approvals
+                </h3>
+                <a href="{% url 'user_approval' %}" class="text-sm font-bold text-primary hover:underline">View All</a>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
+                <div class="p-6 text-center py-12">
+                    <span
+                        class="material-symbols-outlined text-6xl text-slate-200 dark:text-slate-800 mb-4">person_search</span>
+                    <p class="text-slate-500 font-medium">There are {{ pending_approvals_count|default:0 }} users awaiting your approval
+                    </p>
+                    <a href="{% url 'user_approval' %}"
+                        class="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-bold text-sm">
+                        Process Approvals <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}My Applications - EduPulse{% endblock %}
+
+{% block header_title %}Tracking Applications{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-7xl mx-auto space-y-10">
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden rounded-[2.5rem] bg-indigo-900 px-8 py-10 text-white shadow-2xl">
+        <div class="absolute right-0 top-0 -mr-16 -mt-16 size-48 rounded-full bg-primary/20 blur-3xl"></div>
+        <div class="relative z-10 flex items-center gap-6">
+            <div class="size-20 rounded-2xl bg-white/10 backdrop-blur-xl flex items-center justify-center border border-white/20">
+                <span class="material-symbols-outlined text-4xl">description</span>
+            </div>
+            <div>
+                <h1 class="text-3xl font-black italic">Application Tracker</h1>
+                <p class="text-indigo-100/70 text-sm font-medium tracking-wide uppercase mt-1">
+                    Monitor your progress and interview invitations
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {% if applications %}
+    <div class="glass-card rounded-[2.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
+                        <th class="px-8 py-6 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Position & Company</th>
+                        <th class="px-8 py-6 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Date Applied</th>
+                        <th class="px-8 py-6 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Current Status</th>
+                        <th class="px-8 py-6 text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Management</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                    {% for app in applications %}
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors group">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                    <span class="material-symbols-outlined">work</span>
+                                </div>
+                                <div>
+                                    <a href="{% url 'internship_detail' app.job.id %}" class="text-lg font-black text-slate-800 dark:text-slate-100 hover:text-primary transition-colors block">
+                                        {{ app.job.title }}
+                                    </a>
+                                    <p class="text-xs font-bold text-slate-500 italic">{{ app.job.company }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-black text-slate-700 dark:text-slate-300">{{ app.applied_at|date:"M d, Y" }}</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{{ app.applied_at|timesince }} ago</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            {% if app.status == 'APPLIED' %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-500 text-[10px] font-black uppercase tracking-wider border border-amber-500/20">
+                                <span class="size-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                Under Review
+                            </span>
+                            {% elif app.status == 'OFFERED' %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-wider border border-emerald-500/20">
+                                <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                Selected
+                            </span>
+                            {% elif app.status == 'REJECTED' %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-wider border border-red-500/20">
+                                <span class="size-1.5 rounded-full bg-red-500"></span>
+                                Closed
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-500/10 text-slate-500 text-[10px] font-black uppercase tracking-wider border border-slate-500/20">
+                                {{ app.get_status_display }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <a href="{% url 'internship_detail' app.job.id %}" class="inline-flex items-center justify-center size-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-primary hover:text-white transition-all shadow-sm">
+                                <span class="material-symbols-outlined text-xl">visibility</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="glass-card rounded-[3rem] p-24 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 space-y-8 shadow-sm">
+        <div class="relative inline-block">
+            <div class="size-24 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400">
+                <span class="material-symbols-outlined text-5xl">folder_off</span>
+            </div>
+            <div class="absolute -bottom-2 -right-2 size-10 rounded-2xl bg-primary flex items-center justify-center text-white shadow-lg">
+                <span class="material-symbols-outlined text-lg">add</span>
+            </div>
+        </div>
+        <div class="space-y-2">
+            <h3 class="text-2xl font-black text-slate-800 dark:text-slate-100 leading-tight">No Active Applications</h3>
+            <p class="text-slate-500 dark:text-slate-400 font-medium max-w-sm mx-auto italic leading-relaxed">
+                Take the first step towards your career goal. Browse through our active internships and start applying today!
+            </p>
+        </div>
+        <a href="{% url 'internship_list' %}" class="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl font-black text-lg shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+            <span class="material-symbols-outlined">explore</span>
+            Explore Opportunities
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

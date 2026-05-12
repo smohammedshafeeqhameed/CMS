@@ -1,0 +1,101 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}User Approvals - EduPulse{% endblock %}
+
+{% block header_title %}System Governance{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in space-y-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-3xl font-black">Pending Approvals</h2>
+            <p class="text-slate-500 font-medium">Review and authorize new user registrations</p>
+        </div>
+        <div
+            class="px-4 py-2 bg-amber-500/10 text-amber-500 rounded-xl text-xs font-bold uppercase tracking-widest border border-amber-500/20">
+            {{ pending_users|length }} Pending
+        </div>
+    </div>
+
+    <div class="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        {% if pending_users %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/50">
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">User Details
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Role</th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Department
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500">Joined Date
+                        </th>
+                        <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-500 text-right">
+                            Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    {% for pending_user in pending_users %}
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                                    {{ pending_user.username|first|upper }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-900 dark:text-white">{{ pending_user.get_full_name|default:pending_user.username }}</p>
+                                    <p class="text-xs text-slate-500">{{ pending_user.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span
+                                class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-black uppercase tracking-wider border border-slate-200 dark:border-slate-700">
+                                {{ pending_user.get_role_display }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm font-medium text-slate-600 dark:text-slate-400">
+                                {{ pending_user.department_fk.name|default:"N/A" }}
+                            </p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm text-slate-500">{{ pending_user.date_joined|date:"M d, Y" }}</p>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2">
+                                <form action="{% url 'approve_user' pending_user.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" name="action" value="approve"
+                                        class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-xs font-bold hover:scale-105 transition-all shadow-lg shadow-emerald-500/20">
+                                        Approve
+                                    </button>
+                                </form>
+                                <form action="{% url 'approve_user' pending_user.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" name="action" value="reject"
+                                        class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl text-xs font-bold hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700">
+                                        Reject
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-20 text-center">
+            <div
+                class="size-20 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-4xl text-slate-300">person_check</span>
+            </div>
+            <h3 class="text-xl font-black mb-2">Queue is Clear!</h3>
+            <p class="text-slate-500 font-medium">There are no pending user approvals at the moment.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

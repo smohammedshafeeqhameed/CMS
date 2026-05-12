@@ -1,0 +1,109 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}AI Skill Evaluation - EduPulse{% endblock %}
+
+{% block header_title %}Knowledge Assessment{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in max-w-4xl mx-auto space-y-8">
+    <div class="relative overflow-hidden rounded-[2.5rem] bg-indigo-900 px-8 py-12 text-white shadow-2xl">
+        <div class="absolute right-0 top-0 -mr-20 -mt-20 size-64 rounded-full bg-primary/20 blur-3xl"></div>
+        <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+            <div
+                class="size-32 rounded-3xl bg-white/10 backdrop-blur-xl flex items-center justify-center border border-white/20">
+                <span class="material-symbols-outlined text-6xl">psychology</span>
+            </div>
+            <div class="flex-1 text-center md:text-left">
+                <h1 class="text-4xl font-black mb-3 italic">AI Evaluation Engine</h1>
+                <p class="text-indigo-100/70 text-lg leading-relaxed max-w-xl">
+                    Our AI will generate a customized MCQ test based on your current semester curriculum.
+                    Receive instant feedback and personalized learning recommendations.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Selection Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-2">
+            <form method="post"
+                class="glass-card p-8 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm space-y-8 h-full">
+                {% csrf_token %}
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                        <div class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                            <span class="material-symbols-outlined">subject</span>
+                        </div>
+                        <h3 class="text-xl font-black">Select Subject for Assessment</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="block text-sm font-black uppercase tracking-widest text-slate-500">Academic
+                            Target</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-bold">
+                            <div
+                                class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary">school</span>
+                                {{ profile.course.code|default:"Course Not Set" }}
+                            </div>
+                            <div
+                                class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 flex items-center gap-3">
+                                <span class="material-symbols-outlined text-emerald-500">timeline</span>
+                                Semester {{ profile.current_semester }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="block text-sm font-black uppercase tracking-widest text-slate-500">Topic of
+                            Interest</label>
+                        <select name="subject" required
+                            class="w-full h-14 bg-white/5 dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-2xl px-6 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-lg font-bold">
+                            <option value="">Choose a subject...</option>
+                            {% for subject in subjects %}
+                            <option value="{{ subject.id }}">{{ subject.name }} ({{ subject.code }})</option>
+                            {% empty %}
+                            <option value="" disabled>No subjects found for your current semester.</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full py-5 bg-primary text-white rounded-2xl font-black text-xl shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined text-2xl">rocket_launch</span>
+                    Generate AI Test
+                </button>
+            </form>
+        </div>
+
+        <!-- Instructions -->
+        <div class="glass-card p-8 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+            <h3 class="text-xl font-black flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">info</span>
+                Test Rules
+            </h3>
+            <ul class="space-y-4">
+                <li class="flex gap-3 text-sm font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <span class="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
+                    Test consists of 10 generated MCQ questions.
+                </li>
+                <li class="flex gap-3 text-sm font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <span class="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
+                    Covers curriculum from Semester {{ profile.current_semester }}.
+                </li>
+                <li class="flex gap-3 text-sm font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <span class="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
+                    Results will be visible to your Faculty Mentor and HOD.
+                </li>
+            </ul>
+
+            <div class="p-6 rounded-2xl bg-amber-500/5 border border-amber-500/10 mt-8">
+                <p class="text-xs font-bold text-amber-600 uppercase tracking-widest mb-1">Attention</p>
+                <p class="text-sm text-slate-500 font-medium">Do not refresh the page during the test as it might reset
+                    your progress.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

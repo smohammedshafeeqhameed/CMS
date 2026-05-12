@@ -1,0 +1,109 @@
+{% extends 'layouts/modern_dashboard_base.html' %}
+
+{% block title %}Upload Study Material - EduPulse{% endblock %}
+{% block header_title %}Upload New Material{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto animate-fade-in py-8">
+    <div class="glass-card rounded-[3rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-2xl">
+        <!-- Decoration side -->
+        <div class="h-32 bg-gradient-to-r from-primary via-violet-500 to-indigo-600 relative">
+            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+            <div class="absolute -bottom-12 left-12 size-24 bg-white dark:bg-slate-900 rounded-3xl shadow-xl flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-4xl">upload_file</span>
+            </div>
+        </div>
+
+        <div class="p-12 pt-20">
+            <div class="mb-10">
+                <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white mb-2">Share Knowledge</h2>
+                <p class="text-slate-500 dark:text-slate-400 font-medium">Upload resources for your students. These will be automatically visible to the selected department, course, and semester.</p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="space-y-8">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Title -->
+                    <div class="md:col-span-2 space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-xs">title</span> Document Title
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <p class="text-rose-500 text-[10px] font-bold uppercase mt-1">{{ form.title.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="md:col-span-2 space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-xs">attach_file</span> Select File
+                        </label>
+                        <div class="relative group">
+                            {{ form.file }}
+                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none opacity-50">
+                                <span class="material-symbols-outlined">description</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-400 italic">Supported formats: PDF, DOCX, PPTX, JPG, PNG (Max 50MB)</p>
+                        {% if form.file.errors %}
+                            <p class="text-rose-500 text-[10px] font-bold uppercase mt-1">{{ form.file.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Department -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-xs">apartment</span> Department
+                        </label>
+                        {{ form.department }}
+                    </div>
+
+                    <!-- Course -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-xs">school</span> Course
+                        </label>
+                        {{ form.course }}
+                    </div>
+
+                    <!-- Semester -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-xs">calendar_today</span> Semester
+                        </label>
+                        {{ form.semester }}
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-xs">book</span> Subject (Optional)
+                        </label>
+                        {{ form.subject }}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="md:col-span-2 space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-xs">notes</span> Description
+                        </label>
+                        {{ form.description }}
+                    </div>
+                </div>
+
+                <div class="pt-8 flex gap-4">
+                    <button type="submit" class="flex-1 py-4 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3">
+                        <span class="material-symbols-outlined">publish</span>
+                        Confirm & Upload Material
+                    </button>
+                    <a href="{% url 'material_list' %}" class="px-8 py-4 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center justify-center">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
